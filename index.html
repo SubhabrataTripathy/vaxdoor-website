@@ -2,1515 +2,1163 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>VaxDoor — Your Vaccine. Your Doorstep.</title>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --mint:        #E1F0ED;
-    --teal-light:  #A8D8D2;
-    --teal-mid:    #7BC7BD;
-    --teal:        #52B5A8;
-    --teal-deep:   #3A9E94;
-    --teal-dark:   #1E6B64;
-    --white:       #FFFFFF;
-    --off:         #F5FAFA;
-    --grey:        #7A9E9B;
-    --text:        #0F2E2C;
-    --nav-h:       72px;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'Outfit', sans-serif;
-    background: var(--white);
-    color: var(--text);
-    overflow-x: hidden;
-  }
-
-  /* ===================== NAVBAR ===================== */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-    height: var(--nav-h);
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(14px);
-    border-bottom: 1px solid rgba(82,181,168,0.12);
-    display: flex; align-items: center;
-    padding: 0 60px;
-    justify-content: space-between;
-    transition: box-shadow 0.3s;
-  }
-
-  nav.scrolled { box-shadow: 0 4px 24px rgba(30,107,100,0.1); }
-
-  .nav-logo {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 26px; font-weight: 800;
-    letter-spacing: -1px; color: var(--text);
-    text-decoration: none; cursor: pointer;
-  }
-  .nav-logo span { color: var(--teal); }
-
-  .nav-links {
-    display: flex; align-items: center; gap: 4px;
-  }
-
-  .nav-link {
-    font-family: 'Outfit', sans-serif;
-    font-size: 14px; font-weight: 500;
-    color: var(--grey);
-    padding: 8px 16px; border-radius: 10px;
-    cursor: pointer; transition: all 0.2s;
-    border: none; background: none;
-  }
-
-  .nav-link:hover { color: var(--teal-dark); background: var(--mint); }
-  .nav-link.active { color: var(--teal-dark); background: var(--mint); font-weight: 600; }
-
-  .nav-cta {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 14px; font-weight: 700;
-    color: var(--white);
-    background: linear-gradient(135deg, var(--teal), var(--teal-dark));
-    padding: 10px 24px; border-radius: 12px;
-    cursor: pointer; border: none;
-    box-shadow: 0 4px 16px rgba(82,181,168,0.3);
-    transition: transform 0.2s, box-shadow 0.2s;
-    letter-spacing: -0.3px;
-  }
-
-  .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(82,181,168,0.4); }
-
-  .hamburger {
-    display: none; flex-direction: column; gap: 5px;
-    cursor: pointer; background: none; border: none; padding: 4px;
-  }
-  .hamburger span {
-    width: 24px; height: 2px;
-    background: var(--teal-dark); border-radius: 2px;
-    transition: all 0.3s;
-  }
-
-  /* ===================== PAGES ===================== */
-  .page { display: none; padding-top: var(--nav-h); min-height: 100vh; }
-  .page.active { display: block; }
-
-  /* ===================== HOME ===================== */
-  /* Hero */
-  .hero {
-    background: var(--teal-dark);
-    padding: 100px 60px 80px;
-    position: relative; overflow: hidden;
-    min-height: calc(100vh - var(--nav-h));
-    display: flex; align-items: center;
-  }
-
-  .hero-glow {
-    position: absolute; border-radius: 50%;
-    pointer-events: none;
-  }
-  .hero-glow-1 {
-    width: 600px; height: 600px;
-    top: -200px; right: -100px;
-    background: radial-gradient(circle, rgba(82,181,168,0.18), transparent 65%);
-  }
-  .hero-glow-2 {
-    width: 400px; height: 400px;
-    bottom: -150px; left: 50px;
-    background: radial-gradient(circle, rgba(123,199,189,0.1), transparent 70%);
-  }
-
-  .hero-inner {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 60px; align-items: center;
-    position: relative; z-index: 2; width: 100%;
-  }
-
-  .hero-eyebrow {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(82,181,168,0.15);
-    border: 1px solid rgba(168,216,210,0.25);
-    border-radius: 100px; padding: 6px 16px;
-    font-size: 12px; font-weight: 600;
-    color: var(--teal-light); letter-spacing: 1px;
-    text-transform: uppercase; margin-bottom: 24px;
-  }
-
-  .hero-h1 {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 64px; font-weight: 800;
-    color: var(--white); line-height: 1.0;
-    letter-spacing: -2.5px; margin-bottom: 24px;
-  }
-  .hero-h1 em { color: var(--teal-light); font-style: normal; }
-
-  .hero-sub {
-    font-size: 18px; font-weight: 400;
-    color: rgba(255,255,255,0.5); line-height: 1.75;
-    margin-bottom: 40px; max-width: 480px;
-  }
-
-  .hero-actions { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
-
-  .btn-hero-primary {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 16px; font-weight: 700;
-    color: var(--white); letter-spacing: -0.3px;
-    background: linear-gradient(135deg, var(--teal), var(--teal-deep));
-    padding: 16px 32px; border-radius: 14px;
-    border: none; cursor: pointer;
-    box-shadow: 0 8px 28px rgba(82,181,168,0.35);
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(82,181,168,0.45); }
-
-  .btn-hero-ghost {
-    font-family: 'Outfit', sans-serif;
-    font-size: 15px; font-weight: 500;
-    color: rgba(255,255,255,0.6);
-    background: transparent; border: none;
-    cursor: pointer; display: flex; align-items: center; gap: 8px;
-    transition: color 0.2s;
-  }
-  .btn-hero-ghost:hover { color: var(--white); }
-
-  .hero-stats {
-    display: flex; gap: 36px; margin-top: 52px;
-    padding-top: 36px;
-    border-top: 1px solid rgba(255,255,255,0.08);
-  }
-
-  .stat-item .stat-num {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 32px; font-weight: 800;
-    color: var(--white); letter-spacing: -1px;
-  }
-  .stat-item .stat-num span { color: var(--teal-light); }
-  .stat-item .stat-lbl {
-    font-size: 13px; color: rgba(255,255,255,0.4);
-    margin-top: 4px; font-weight: 400;
-  }
-
-  /* Phone mockup in hero */
-  .hero-phone-wrap {
-    display: flex; justify-content: center; align-items: center;
-    position: relative;
-  }
-
-  .hero-phone-wrap::before {
-    content: '';
-    position: absolute; width: 300px; height: 300px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(82,181,168,0.15), transparent 70%);
-    z-index: 0;
-  }
-
-  .hero-phone {
-    background: var(--teal-deep);
-    border-radius: 44px; padding: 14px;
-    border: 2px solid rgba(168,216,210,0.15);
-    width: 280px;
-    box-shadow: 0 40px 100px rgba(30,107,100,0.5);
-    position: relative; z-index: 1;
-    animation: float 4s ease-in-out infinite;
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-12px); }
-  }
-
-  .hp-screen { background: var(--off); border-radius: 32px; overflow: hidden; }
-
-  .hp-status {
-    background: var(--teal-dark); padding: 12px 18px 8px;
-    display: flex; justify-content: space-between;
-  }
-  .hp-time { font-family:'Bricolage Grotesque'; font-size:13px; font-weight:700; color:var(--white); }
-  .hp-ico  { font-size:10px; color:rgba(255,255,255,0.4); }
-
-  .hp-topbar {
-    background: linear-gradient(135deg, var(--teal), var(--teal-deep));
-    padding: 18px 18px 22px;
-  }
-  .hp-hi   { font-size:11px; color:rgba(255,255,255,0.55); margin-bottom:3px; }
-  .hp-name { font-family:'Bricolage Grotesque'; font-size:20px; font-weight:800; color:var(--white); letter-spacing:-0.5px; }
-
-  .hp-body { padding: 16px; }
-  .hp-section-lbl {
-    font-size:9px; font-weight:700; letter-spacing:2px;
-    text-transform:uppercase; color:var(--grey); margin-bottom:10px;
-  }
-
-  .hp-card {
-    background: var(--white); border-radius:14px; padding:13px;
-    margin-bottom:9px;
-    display:flex; align-items:center; gap:10px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.05);
-  }
-
-  .hp-cico {
-    width:38px; height:38px; border-radius:11px;
-    display:flex; align-items:center; justify-content:center;
-    font-size:16px; flex-shrink:0;
-  }
-  .hpc-b { background:rgba(82,181,168,0.12); }
-  .hpc-l { background:rgba(168,216,210,0.25); }
-
-  .hp-ctitle { font-family:'Bricolage Grotesque'; font-size:13px; font-weight:700; color:var(--text); letter-spacing:-0.3px; }
-  .hp-csub   { font-size:10px; color:var(--grey); margin-top:2px; }
-
-  .hp-btn {
-    background:linear-gradient(135deg,var(--teal),var(--teal-deep));
-    color:var(--white); border-radius:12px; padding:12px;
-    text-align:center;
-    font-family:'Bricolage Grotesque'; font-size:13px; font-weight:700;
-    letter-spacing:-0.3px; margin-top:4px;
-  }
-
-  /* ---- Home: Features Strip ---- */
-  .features-strip {
-    padding: 80px 60px;
-    background: var(--off);
-  }
-
-  .strip-label {
-    font-size: 11px; font-weight: 700;
-    letter-spacing: 3px; text-transform: uppercase;
-    color: var(--teal); margin-bottom: 12px; text-align: center;
-  }
-
-  .strip-title {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 40px; font-weight: 800;
-    letter-spacing: -1.5px; color: var(--text);
-    text-align: center; margin-bottom: 56px;
-  }
-
-  .features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
-
-  .feat-card {
-    background: var(--white);
-    border-radius: 20px; padding: 36px 30px;
-    border: 1px solid rgba(82,181,168,0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-    cursor: default;
-  }
-  .feat-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(82,181,168,0.12); }
-
-  .feat-ico {
-    width: 56px; height: 56px; border-radius: 16px;
-    background: rgba(82,181,168,0.1);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 26px; margin-bottom: 22px;
-  }
-
-  .feat-title {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 20px; font-weight: 700; letter-spacing: -0.5px;
-    color: var(--text); margin-bottom: 10px;
-  }
-
-  .feat-body {
-    font-size: 14px; color: var(--grey);
-    line-height: 1.75;
-  }
-
-  /* ---- Testimonials ---- */
-  .testimonials { padding: 80px 60px; background: var(--white); }
-
-  .testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; margin-top: 48px; }
-
-  .testi-card {
-    background: var(--off);
-    border-radius: 20px; padding: 32px;
-    border: 1px solid rgba(82,181,168,0.08);
-  }
-
-  .testi-stars { color: #F4B800; font-size: 14px; margin-bottom: 14px; }
-
-  .testi-quote {
-    font-size: 15px; color: var(--text);
-    line-height: 1.75; margin-bottom: 20px;
-    font-style: italic;
-  }
-
-  .testi-author { display: flex; align-items: center; gap: 12px; }
-
-  .testi-avatar {
-    width: 42px; height: 42px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; flex-shrink: 0;
-  }
-  .av-1 { background: rgba(82,181,168,0.15); }
-  .av-2 { background: rgba(168,216,210,0.3); }
-  .av-3 { background: rgba(58,158,148,0.12); }
-
-  .testi-name {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: -0.3px;
-  }
-  .testi-role { font-size: 12px; color: var(--grey); margin-top: 2px; }
-
-  /* ===================== HOW IT WORKS ===================== */
-  .hiw-hero {
-    background: linear-gradient(135deg, var(--teal-dark), var(--teal-deep));
-    padding: 80px 60px;
-    text-align: center;
-  }
-
-  .hiw-hero h1 {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 52px; font-weight: 800;
-    letter-spacing: -2px; color: var(--white);
-    margin-bottom: 16px;
-  }
-  .hiw-hero h1 em { color: var(--teal-light); font-style: normal; }
-
-  .hiw-hero p {
-    font-size: 18px; color: rgba(255,255,255,0.5);
-    max-width: 520px; margin: 0 auto; line-height: 1.7;
-  }
-
-  .hiw-steps { padding: 80px 60px; background: var(--white); }
-
-  .steps-track {
-    display: grid; grid-template-columns: repeat(4,1fr);
-    gap: 0; position: relative; margin-top: 48px;
-  }
-
-  .steps-track::before {
-    content: '';
-    position: absolute; top: 36px; left: 12.5%; right: 12.5%;
-    height: 2px;
-    background: linear-gradient(90deg, var(--teal), var(--teal-light));
-    z-index: 0;
-  }
-
-  .step-item {
-    display: flex; flex-direction: column;
-    align-items: center; text-align: center;
-    padding: 0 20px; position: relative; z-index: 1;
-  }
-
-  .step-circle {
-    width: 72px; height: 72px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--teal), var(--teal-dark));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 28px; margin-bottom: 24px;
-    box-shadow: 0 8px 24px rgba(82,181,168,0.3);
-    border: 3px solid var(--white);
-  }
-
-  .step-num {
-    position: absolute; top: -6px; right: calc(50% - 42px);
-    width: 22px; height: 22px; border-radius: 50%;
-    background: var(--teal-dark);
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 11px; font-weight: 800;
-    color: var(--white);
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  .step-title {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 18px; font-weight: 700; letter-spacing: -0.5px;
-    color: var(--text); margin-bottom: 10px;
-  }
-
-  .step-desc { font-size: 14px; color: var(--grey); line-height: 1.7; }
-
-  /* Detail cards */
-  .hiw-details { padding: 0 60px 80px; background: var(--white); }
-
-  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-
-  .detail-card {
-    border-radius: 20px; padding: 36px;
-    display: flex; gap: 22px; align-items: flex-start;
-  }
-  .dc-mint  { background: var(--mint); }
-  .dc-white { background: var(--off); border: 1px solid rgba(82,181,168,0.1); }
-
-  .dc-ico {
-    width: 52px; height: 52px; border-radius: 14px;
-    background: var(--white);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 24px; flex-shrink: 0;
-    box-shadow: 0 4px 16px rgba(82,181,168,0.12);
-  }
-
-  .dc-title {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 18px; font-weight: 700; letter-spacing: -0.5px;
-    color: var(--text); margin-bottom: 8px;
-  }
-
-  .dc-body { font-size: 14px; color: var(--grey); line-height: 1.75; }
-
-  /* ===================== VACCINES ===================== */
-  .vaccines-hero {
-    background: var(--mint);
-    padding: 80px 60px;
-    text-align: center;
-  }
-
-  .vaccines-hero h1 {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 52px; font-weight: 800;
-    letter-spacing: -2px; color: var(--text);
-    margin-bottom: 16px;
-  }
-  .vaccines-hero h1 span { color: var(--teal); }
-
-  .vaccines-hero p { font-size: 17px; color: var(--grey); max-width: 500px; margin: 0 auto; line-height: 1.7; }
-
-  .vaccines-grid-section { padding: 64px 60px; background: var(--white); }
-
-  .category-block { margin-bottom: 56px; }
-
-  .cat-header {
-    display: flex; align-items: center; gap: 14px;
-    margin-bottom: 24px;
-  }
-
-  .cat-ico {
-    width: 44px; height: 44px; border-radius: 12px;
-    background: rgba(82,181,168,0.1);
-    display: flex; align-items: center; justify-content: center; font-size: 20px;
-  }
-
-  .cat-name {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 22px; font-weight: 700; letter-spacing: -0.5px; color: var(--text);
-  }
-
-  .vax-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
-
-  .vax-card {
-    background: var(--off); border-radius: 16px; padding: 22px;
-    border: 1px solid rgba(82,181,168,0.08);
-    transition: all 0.25s; cursor: pointer;
-  }
-  .vax-card:hover {
-    background: var(--mint); border-color: rgba(82,181,168,0.25);
-    transform: translateY(-3px); box-shadow: 0 10px 30px rgba(82,181,168,0.1);
-  }
-
-  .vax-name {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 16px; font-weight: 700; letter-spacing: -0.3px;
-    color: var(--text); margin-bottom: 6px;
-  }
-
-  .vax-desc { font-size: 12px; color: var(--grey); line-height: 1.6; margin-bottom: 14px; }
-
-  .vax-price {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 18px; font-weight: 800; color: var(--teal-dark);
-    letter-spacing: -0.5px;
-  }
-
-  .vax-badge {
-    display: inline-block; font-size: 10px; font-weight: 600;
-    letter-spacing: 1px; text-transform: uppercase;
-    padding: 3px 10px; border-radius: 6px; margin-bottom: 10px;
-  }
-  .vb-govt { background: rgba(82,181,168,0.12); color: var(--teal-dark); }
-  .vb-opt  { background: rgba(255,180,0,0.1); color: #8A6000; }
-  .vb-pop  { background: rgba(82,181,168,0.2); color: var(--teal-dark); }
-
-  /* ===================== FOR VACCINATORS ===================== */
-  .vtor-hero {
-    background: var(--teal-dark);
-    padding: 80px 60px;
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 60px; align-items: center;
-  }
-
-  .vtor-hero h1 {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 52px; font-weight: 800;
-    letter-spacing: -2px; color: var(--white);
-    margin-bottom: 20px; line-height: 1.05;
-  }
-  .vtor-hero h1 em { color: var(--teal-light); font-style: normal; }
-
-  .vtor-hero p { font-size: 17px; color: rgba(255,255,255,0.45); line-height: 1.75; margin-bottom: 32px; }
-
-  .btn-vtor {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 15px; font-weight: 700; letter-spacing: -0.3px;
-    background: var(--white); color: var(--teal-dark);
-    padding: 14px 30px; border-radius: 12px; border: none; cursor: pointer;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-    transition: transform 0.2s;
-  }
-  .btn-vtor:hover { transform: translateY(-2px); }
-
-  .vtor-card-stack { display: flex; flex-direction: column; gap: 16px; }
-
-  .vtor-info-card {
-    background: rgba(255,255,255,0.06); border-radius: 16px; padding: 22px;
-    border: 1px solid rgba(168,216,210,0.12);
-    display: flex; align-items: center; gap: 16px;
-  }
-
-  .vic-ico {
-    width: 48px; height: 48px; border-radius: 12px;
-    background: rgba(82,181,168,0.15);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px; flex-shrink: 0;
-  }
-
-  .vic-title {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 16px; font-weight: 700; color: var(--white); letter-spacing: -0.3px;
-  }
-  .vic-sub { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 3px; }
-
-  .vtor-benefits { padding: 80px 60px; background: var(--off); }
-
-  .benefits-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; margin-top: 48px; }
-
-  .ben-card {
-    background: var(--white); border-radius: 20px; padding: 32px;
-    border: 1px solid rgba(82,181,168,0.08);
-    text-align: center;
-  }
-
-  .ben-ico { font-size: 36px; margin-bottom: 16px; }
-
-  .ben-title {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 18px; font-weight: 700; letter-spacing: -0.5px;
-    color: var(--text); margin-bottom: 10px;
-  }
-
-  .ben-body { font-size: 14px; color: var(--grey); line-height: 1.75; }
-
-  /* ===================== PRICING ===================== */
-  .pricing-hero {
-    background: var(--mint); padding: 80px 60px; text-align: center;
-  }
-
-  .pricing-hero h1 {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 52px; font-weight: 800; letter-spacing: -2px;
-    color: var(--text); margin-bottom: 16px;
-  }
-  .pricing-hero h1 span { color: var(--teal); }
-
-  .pricing-hero p { font-size: 17px; color: var(--grey); max-width: 480px; margin: 0 auto; line-height: 1.7; }
-
-  .pricing-section { padding: 80px 60px; background: var(--white); }
-
-  .plans-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-bottom: 60px; }
-
-  .plan-card {
-    border-radius: 22px; padding: 36px; border: 1.5px solid rgba(82,181,168,0.12);
-    position: relative; transition: all 0.25s;
-  }
-  .plan-card:hover { border-color: var(--teal); box-shadow: 0 16px 48px rgba(82,181,168,0.12); }
-  .plan-card.featured {
-    background: linear-gradient(145deg, var(--teal-dark), var(--teal-deep));
-    border-color: transparent;
-    box-shadow: 0 20px 60px rgba(30,107,100,0.3);
-  }
-
-  .plan-badge {
-    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-    background: var(--teal); color: var(--white);
-    font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
-    padding: 5px 18px; border-radius: 100px;
-    font-family: 'Outfit', sans-serif;
-  }
-
-  .plan-name {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 20px; font-weight: 700; letter-spacing: -0.5px;
-    color: var(--text); margin-bottom: 6px;
-  }
-  .plan-card.featured .plan-name { color: var(--white); }
-
-  .plan-desc { font-size: 13px; color: var(--grey); margin-bottom: 24px; }
-  .plan-card.featured .plan-desc { color: rgba(255,255,255,0.5); }
-
-  .plan-price {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 44px; font-weight: 800; letter-spacing: -2px;
-    color: var(--text); line-height: 1; margin-bottom: 6px;
-  }
-  .plan-card.featured .plan-price { color: var(--white); }
-
-  .plan-price sub {
-    font-size: 16px; font-weight: 500; letter-spacing: 0;
-    vertical-align: baseline; color: var(--grey);
-  }
-  .plan-card.featured .plan-price sub { color: rgba(255,255,255,0.4); }
-
-  .plan-period { font-size: 13px; color: var(--grey); margin-bottom: 28px; }
-  .plan-card.featured .plan-period { color: rgba(255,255,255,0.4); }
-
-  .plan-divider { height: 1px; background: rgba(82,181,168,0.12); margin-bottom: 24px; }
-  .plan-card.featured .plan-divider { background: rgba(255,255,255,0.1); }
-
-  .plan-features { list-style: none; margin-bottom: 32px; }
-  .plan-features li {
-    display: flex; align-items: flex-start; gap: 10px;
-    font-size: 14px; color: var(--text); margin-bottom: 12px; line-height: 1.5;
-  }
-  .plan-card.featured .plan-features li { color: rgba(255,255,255,0.8); }
-  .plan-features li::before { content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0; }
-  .plan-card.featured .plan-features li::before { color: var(--teal-light); }
-
-  .plan-btn {
-    display: block; width: 100%; padding: 14px;
-    border-radius: 12px; font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 15px; font-weight: 700; letter-spacing: -0.3px;
-    text-align: center; cursor: pointer; border: none; transition: all 0.2s;
-  }
-  .plan-btn-outline {
-    background: transparent; color: var(--teal-dark);
-    border: 1.5px solid rgba(82,181,168,0.3);
-  }
-  .plan-btn-outline:hover { background: var(--mint); }
-  .plan-btn-solid {
-    background: var(--white); color: var(--teal-dark);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-  }
-  .plan-btn-solid:hover { transform: translateY(-1px); }
-
-  /* ===================== CONTACT ===================== */
-  .contact-hero {
-    background: linear-gradient(135deg, var(--teal-dark), var(--teal-deep));
-    padding: 80px 60px; text-align: center;
-  }
-
-  .contact-hero h1 {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 52px; font-weight: 800; letter-spacing: -2px;
-    color: var(--white); margin-bottom: 16px;
-  }
-  .contact-hero h1 em { color: var(--teal-light); font-style: normal; }
-
-  .contact-hero p { font-size: 17px; color: rgba(255,255,255,0.45); max-width: 500px; margin: 0 auto; line-height: 1.7; }
-
-  .contact-section { padding: 80px 60px; background: var(--white); }
-
-  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
-
-  .contact-form { background: var(--off); border-radius: 22px; padding: 40px; }
-
-  .cf-title {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 24px; font-weight: 700; letter-spacing: -0.8px;
-    color: var(--text); margin-bottom: 28px;
-  }
-
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-
-  .form-group { margin-bottom: 16px; }
-
-  .form-label {
-    display: block; font-size: 12px; font-weight: 600;
-    color: var(--teal-dark); margin-bottom: 6px; letter-spacing: 0.3px;
-  }
-
-  .form-input, .form-select, .form-textarea {
-    width: 100%; border: 1.5px solid rgba(82,181,168,0.2);
-    border-radius: 12px; padding: 13px 16px;
-    font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--text);
-    background: var(--white); outline: none; transition: border-color 0.2s;
-    appearance: none;
-  }
-  .form-input:focus, .form-select:focus, .form-textarea:focus {
-    border-color: var(--teal);
-    box-shadow: 0 0 0 3px rgba(82,181,168,0.1);
-  }
-  .form-input::placeholder, .form-textarea::placeholder { color: var(--grey); }
-  .form-textarea { resize: vertical; min-height: 120px; }
-
-  .form-submit {
-    width: 100%; padding: 15px;
-    background: linear-gradient(135deg, var(--teal), var(--teal-dark));
-    color: var(--white); border: none; border-radius: 12px;
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 16px; font-weight: 700; letter-spacing: -0.3px;
-    cursor: pointer; transition: all 0.2s;
-    box-shadow: 0 6px 20px rgba(82,181,168,0.3);
-  }
-  .form-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(82,181,168,0.4); }
-
-  .contact-info { display: flex; flex-direction: column; gap: 24px; }
-
-  .ci-title {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 32px; font-weight: 800; letter-spacing: -1px;
-    color: var(--text); line-height: 1.1; margin-bottom: 16px;
-  }
-  .ci-title span { color: var(--teal); }
-
-  .ci-body { font-size: 16px; color: var(--grey); line-height: 1.8; margin-bottom: 36px; }
-
-  .ci-card {
-    background: var(--off); border-radius: 16px; padding: 22px;
-    display: flex; gap: 16px; align-items: flex-start;
-    border: 1px solid rgba(82,181,168,0.08);
-  }
-
-  .ci-ico {
-    width: 46px; height: 46px; border-radius: 12px;
-    background: rgba(82,181,168,0.1);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px; flex-shrink: 0;
-  }
-
-  .ci-info-title {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: -0.3px;
-  }
-  .ci-info-val { font-size: 14px; color: var(--grey); margin-top: 3px; }
-
-  /* ===================== FOOTER ===================== */
-  footer {
-    background: var(--teal-dark); padding: 64px 60px 32px;
-  }
-
-  .footer-top {
-    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 48px; margin-bottom: 56px;
-  }
-
-  .footer-brand .fl-logo {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 28px; font-weight: 800; letter-spacing: -1px;
-    color: var(--white); margin-bottom: 14px;
-  }
-  .fl-logo span { color: var(--teal-light); }
-
-  .footer-brand p {
-    font-size: 14px; color: rgba(255,255,255,0.4);
-    line-height: 1.75; max-width: 280px; margin-bottom: 24px;
-  }
-
-  .social-row { display: flex; gap: 10px; }
-  .soc-btn {
-    width: 38px; height: 38px; border-radius: 10px;
-    background: rgba(255,255,255,0.07);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px; cursor: pointer; transition: background 0.2s;
-    border: none;
-  }
-  .soc-btn:hover { background: rgba(82,181,168,0.2); }
-
-  .footer-col h4 {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 15px; font-weight: 700; letter-spacing: -0.3px;
-    color: var(--white); margin-bottom: 18px;
-  }
-
-  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-  .footer-col ul li {
-    font-size: 14px; color: rgba(255,255,255,0.38);
-    cursor: pointer; transition: color 0.2s;
-  }
-  .footer-col ul li:hover { color: var(--teal-light); }
-
-  .footer-bottom {
-    border-top: 1px solid rgba(255,255,255,0.07);
-    padding-top: 28px;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-
-  .fb-copy { font-size: 13px; color: rgba(255,255,255,0.25); }
-  .fb-made { font-size: 13px; color: rgba(255,255,255,0.25); }
-  .fb-made span { color: var(--teal-light); font-weight: 600; }
-
-  /* ===================== SHARED ===================== */
-  .section-header { text-align: center; margin-bottom: 48px; }
-  .section-header .sect-label { display: block; }
-  .section-header h2 {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 38px; font-weight: 800; letter-spacing: -1.5px;
-    color: var(--text);
-  }
-  .section-header h2 span { color: var(--teal); }
-
-  .app-download {
-    background: var(--mint); padding: 80px 60px; text-align: center;
-  }
-
-  .app-download h2 {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 42px; font-weight: 800; letter-spacing: -1.5px;
-    color: var(--text); margin-bottom: 14px;
-  }
-  .app-download h2 span { color: var(--teal); }
-
-  .app-download p { font-size: 17px; color: var(--grey); margin-bottom: 36px; }
-
-  .store-btns { display: flex; gap: 14px; justify-content: center; }
-
-  .store-btn {
-    display: flex; align-items: center; gap: 12px;
-    background: var(--teal-dark); color: var(--white);
-    padding: 14px 24px; border-radius: 14px; cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    border: none;
-    box-shadow: 0 6px 20px rgba(30,107,100,0.25);
-  }
-  .store-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(30,107,100,0.35); }
-  .store-btn-ico { font-size: 26px; }
-  .store-btn-text { text-align: left; }
-  .store-btn-text .sbt-small {
-    font-size: 11px; font-weight: 400; color: rgba(255,255,255,0.5); display: block;
-  }
-  .store-btn-text .sbt-big {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 17px; font-weight: 700; letter-spacing: -0.5px;
-  }
-
-  /* ===================== RESPONSIVE ===================== */
-  @media (max-width: 900px) {
-    nav { padding: 0 24px; }
-    .nav-links { display: none; }
-    .hamburger { display: flex; }
-
-    .hero, .hiw-hero, .vtor-hero, .contact-section { padding: 48px 24px; }
-    .hero-inner, .vtor-hero, .contact-grid, .mockup-wrap { grid-template-columns: 1fr; }
-    .hero-phone-wrap { display: none; }
-    .hero-h1 { font-size: 42px; }
-    .steps-track { grid-template-columns: repeat(2,1fr); }
-    .steps-track::before { display: none; }
-    .features-strip, .testimonials, .hiw-steps, .hiw-details,
-    .vaccines-grid-section, .vtor-benefits, .pricing-section, .app-download { padding: 48px 24px; }
-    .features-grid, .testi-grid, .benefits-grid, .plans-grid { grid-template-columns: 1fr; }
-    .detail-grid, .footer-top { grid-template-columns: 1fr; }
-    .vax-grid { grid-template-columns: repeat(2,1fr); }
-    .form-row { grid-template-columns: 1fr; }
-    footer { padding: 48px 24px 28px; }
-    .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
-    .vaccines-hero, .pricing-hero, .contact-hero { padding: 60px 24px; }
-    .vaccines-hero h1, .pricing-hero h1, .contact-hero h1, .hiw-hero h1 { font-size: 36px; }
-
-    .mobile-menu {
-      display: flex !important; flex-direction: column; gap: 4px;
-      position: fixed; top: var(--nav-h); left: 0; right: 0;
-      background: var(--white); padding: 16px 24px;
-      border-bottom: 1px solid rgba(82,181,168,0.12);
-      z-index: 999;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    }
-
-    .mobile-menu .nav-link { width: 100%; text-align: left; }
-    .mobile-menu .nav-cta { width: 100%; margin-top: 8px; }
-  }
+:root {
+  --mint:#E1F0ED; --teal-xl:#C5E8E2; --teal-l:#A8D8D2;
+  --teal-m:#7BC7BD; --teal:#52B5A8; --teal-d:#3A9E94;
+  --teal-dk:#1E6B64; --teal-xd:#0F3B37;
+  --white:#fff; --off:#F5FAFA; --grey:#7A9E9B;
+  --text:#0F2E2C; --nh:64px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Outfit',sans-serif;background:var(--white);color:var(--text);overflow-x:hidden;}
+img{max-width:100%;}
+button{cursor:pointer;border:none;background:none;font-family:inherit;}
+
+/* ── NAV ───────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:999;
+  height:var(--nh);
+  background:rgba(255,255,255,0.96);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(82,181,168,0.1);
+  display:flex;align-items:center;
+  padding:0 5%;
+  justify-content:space-between;
+  transition:box-shadow .3s;
+}
+nav.scrolled{box-shadow:0 4px 24px rgba(30,107,100,.09);}
+
+.nl{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;
+  letter-spacing:-1px;color:var(--text);cursor:pointer;}
+.nl span{color:var(--teal);}
+
+.nlinks{display:flex;align-items:center;gap:2px;}
+.nlink{font-size:13px;font-weight:500;color:var(--grey);
+  padding:7px 14px;border-radius:9px;transition:all .2s;}
+.nlink:hover,.nlink.act{color:var(--teal-dk);background:var(--mint);font-weight:600;}
+
+.ncta{font-family:'Bricolage Grotesque',sans-serif;font-size:13px;font-weight:700;
+  color:var(--white);background:linear-gradient(135deg,var(--teal),var(--teal-dk));
+  padding:9px 22px;border-radius:10px;letter-spacing:-.3px;
+  box-shadow:0 4px 14px rgba(82,181,168,.3);transition:all .2s;margin-left:8px;}
+.ncta:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(82,181,168,.4);}
+
+.hbg{display:none;flex-direction:column;gap:5px;padding:6px;}
+.hbg span{width:22px;height:2px;background:var(--teal-dk);border-radius:2px;transition:all .3s;display:block;}
+
+/* ── PAGES ─────────────────────────────────── */
+.page{display:none;padding-top:var(--nh);min-height:100vh;}
+.page.act{display:block;}
+
+/* ── MOBILE MENU ────────────────────────────── */
+.mmenu{
+  display:none;position:fixed;
+  top:var(--nh);left:0;right:0;z-index:998;
+  background:var(--white);
+  padding:12px 5% 20px;
+  border-bottom:1px solid rgba(82,181,168,.1);
+  box-shadow:0 12px 32px rgba(0,0,0,.08);
+  flex-direction:column;gap:4px;
+}
+.mmenu .nlink{font-size:15px;padding:11px 16px;border-radius:10px;}
+.mmenu .ncta{margin:8px 0 0;padding:13px;text-align:center;border-radius:12px;font-size:15px;}
+
+/* ══════════════════════════════════════════════
+   HOME
+══════════════════════════════════════════════ */
+.hero{
+  background:var(--teal-dk);
+  padding:70px 5% 60px;
+  position:relative;overflow:hidden;
+  min-height:calc(100vh - var(--nh));
+  display:flex;align-items:center;
+}
+.h-glow{position:absolute;border-radius:50%;pointer-events:none;}
+.hg1{width:500px;height:500px;top:-180px;right:-80px;
+  background:radial-gradient(circle,rgba(82,181,168,.18),transparent 65%);}
+.hg2{width:350px;height:350px;bottom:-120px;left:40px;
+  background:radial-gradient(circle,rgba(123,199,189,.1),transparent 70%);}
+
+.hero-inner{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:48px;align-items:center;
+  position:relative;z-index:2;width:100%;max-width:1200px;margin:0 auto;
+}
+
+.h-pill{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(82,181,168,.15);
+  border:1px solid rgba(168,216,210,.25);
+  border-radius:100px;padding:5px 16px;
+  font-size:11px;font-weight:600;color:var(--teal-l);
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:22px;
+}
+.h1{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:clamp(36px,5vw,62px);font-weight:800;
+  color:var(--white);line-height:1.02;
+  letter-spacing:-2px;margin-bottom:20px;
+}
+.h1 em{color:var(--teal-l);font-style:normal;}
+.hsub{font-size:clamp(14px,1.8vw,17px);color:rgba(255,255,255,.48);
+  line-height:1.8;margin-bottom:36px;max-width:460px;}
+
+.hbtns{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+.hbp{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;
+  color:var(--white);letter-spacing:-.3px;
+  background:linear-gradient(135deg,var(--teal),var(--teal-d));
+  padding:14px 28px;border-radius:13px;
+  box-shadow:0 8px 26px rgba(82,181,168,.35);transition:all .2s;}
+.hbp:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(82,181,168,.45);}
+.hbg2{font-size:14px;font-weight:500;color:rgba(255,255,255,.55);
+  display:flex;align-items:center;gap:8px;transition:color .2s;}
+.hbg2:hover{color:var(--white);}
+
+.hstats{display:flex;gap:28px;margin-top:44px;
+  padding-top:28px;border-top:1px solid rgba(255,255,255,.08);}
+.hs-n{font-family:'Bricolage Grotesque',sans-serif;
+  font-size:28px;font-weight:800;color:var(--white);letter-spacing:-1px;}
+.hs-n span{color:var(--teal-l);}
+.hs-l{font-size:12px;color:rgba(255,255,255,.38);margin-top:3px;}
+
+/* ── HERO PHONE (redesigned) ─────────────────── */
+.hero-phone-wrap{
+  display:flex;justify-content:center;align-items:center;
+  position:relative;
+}
+
+/* Ambient glow behind phone */
+.hero-phone-wrap::before{
+  content:'';
+  position:absolute;
+  width:320px;height:320px;border-radius:50%;
+  background:radial-gradient(circle,rgba(82,181,168,.22),transparent 65%);
+  z-index:0;
+}
+
+/* Outer device shell */
+.device{
+  position:relative;z-index:2;
+  width:270px;
+  background:linear-gradient(160deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);
+  border-radius:46px;
+  padding:10px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.06),
+    0 40px 80px rgba(0,0,0,.5),
+    0 20px 40px rgba(30,107,100,.3),
+    inset 0 1px 0 rgba(255,255,255,.08);
+  animation:float 4s ease-in-out infinite;
+}
+
+@keyframes float{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-12px) rotate(.5deg);}}
+
+/* Side buttons */
+.device::before{
+  content:'';
+  position:absolute;
+  right:-3px;top:100px;
+  width:3px;height:60px;border-radius:0 3px 3px 0;
+  background:linear-gradient(#1a1a2e,#0f3460);
+}
+.device::after{
+  content:'';
+  position:absolute;
+  left:-3px;top:80px;
+  width:3px;height:40px;border-radius:3px 0 0 3px;
+  background:linear-gradient(#1a1a2e,#0f3460);
+  box-shadow:0 48px 0 rgba(26,26,46,.8);
+}
+
+/* Inner screen bezel */
+.device-inner{
+  background:#000;
+  border-radius:38px;
+  overflow:hidden;
+  position:relative;
+}
+
+/* Notch / dynamic island */
+.notch{
+  position:absolute;top:10px;left:50%;transform:translateX(-50%);
+  width:90px;height:26px;
+  background:#000;border-radius:100px;
+  z-index:10;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.notch-cam{
+  width:10px;height:10px;border-radius:50%;
+  background:radial-gradient(circle at 40% 35%,#333,#111);
+  border:1px solid rgba(255,255,255,.05);
+}
+.notch-speaker{width:40px;height:4px;border-radius:4px;background:#1a1a1a;}
+
+/* Status bar */
+.sbar{
+  background:var(--teal-xd);
+  padding:34px 16px 10px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.sbar-time{font-family:'Bricolage Grotesque',sans-serif;font-size:13px;font-weight:700;color:var(--white);}
+.sbar-icons{display:flex;gap:4px;align-items:center;}
+.sbar-icons span{font-size:10px;color:rgba(255,255,255,.7);}
+
+/* App screen content */
+.app-screen{background:var(--off);}
+
+/* Header band */
+.app-header{
+  background:linear-gradient(135deg,var(--teal),var(--teal-d));
+  padding:14px 16px 20px;
+  position:relative;overflow:hidden;
+}
+.app-header::before{
+  content:'';position:absolute;right:-20px;top:-20px;
+  width:80px;height:80px;border-radius:50%;
+  background:rgba(255,255,255,.06);
+}
+.app-hello{font-size:10px;color:rgba(255,255,255,.55);margin-bottom:2px;letter-spacing:.5px;}
+.app-name{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;
+  color:var(--white);letter-spacing:-.5px;}
+.app-subtitle{font-size:9px;color:rgba(255,255,255,.45);margin-top:2px;}
+
+/* Search bar */
+.app-search{
+  background:rgba(255,255,255,.15);
+  border-radius:10px;margin-top:10px;
+  padding:8px 12px;
+  display:flex;align-items:center;gap:6px;
+  border:1px solid rgba(255,255,255,.12);
+}
+.app-search-icon{font-size:11px;}
+.app-search-text{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.3px;}
+
+/* Quick actions row */
+.app-quick{
+  padding:12px 14px 6px;
+  display:flex;gap:8px;
+}
+.aq-item{
+  flex:1;background:var(--white);border-radius:10px;
+  padding:10px 6px;text-align:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.aq-ico{font-size:18px;margin-bottom:4px;}
+.aq-lbl{font-size:8px;font-weight:600;color:var(--grey);letter-spacing:.3px;}
+
+/* Cards */
+.app-section-label{
+  font-size:8px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--grey);
+  padding:6px 14px 4px;
+}
+
+.app-card{
+  margin:0 12px 8px;
+  background:var(--white);border-radius:12px;padding:11px 12px;
+  display:flex;align-items:center;gap:10px;
+  box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
+.ac-ico{
+  width:34px;height:34px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;flex-shrink:0;
+}
+.aci-b{background:rgba(82,181,168,.12);}
+.aci-l{background:rgba(168,216,210,.25);}
+.ac-title{font-family:'Bricolage Grotesque',sans-serif;font-size:11px;font-weight:700;color:var(--text);letter-spacing:-.2px;}
+.ac-sub{font-size:8.5px;color:var(--grey);margin-top:1px;}
+.ac-badge{margin-left:auto;font-size:7.5px;font-weight:700;
+  padding:3px 7px;border-radius:6px;background:rgba(255,180,0,.12);color:#8A6000;white-space:nowrap;}
+.ac-badge.due{background:rgba(220,60,60,.1);color:#a02020;}
+
+.app-book-btn{
+  margin:6px 12px 14px;
+  background:linear-gradient(135deg,var(--teal),var(--teal-d));
+  color:var(--white);border-radius:10px;padding:11px;
+  text-align:center;
+  font-family:'Bricolage Grotesque',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:-.2px;
+}
+
+/* Bottom nav */
+.app-nav{
+  background:var(--white);
+  padding:8px 6px 10px;
+  display:flex;justify-content:space-around;
+  border-top:1px solid rgba(0,0,0,.06);
+}
+.an-item{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.an-ico{font-size:15px;}
+.an-lbl{font-size:7px;font-weight:600;color:var(--grey);letter-spacing:.3px;}
+.an-item.active .an-lbl{color:var(--teal);}
+
+/* ── FEATURES ─────────────────────────────── */
+.sec{padding:72px 5%;background:var(--white);}
+.sec-off{background:var(--off);}
+.sec-mint{background:var(--mint);}
+.sec-dk{background:var(--teal-dk);}
+
+.sec-center{text-align:center;}
+.sec-tag{display:block;font-size:10px;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;color:var(--teal);margin-bottom:10px;}
+.sec-dk .sec-tag{color:var(--teal-l);}
+.sec-h{font-family:'Bricolage Grotesque',sans-serif;
+  font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-1.2px;
+  color:var(--text);margin-bottom:40px;}
+.sec-dk .sec-h{color:var(--white);}
+.sec-h span{color:var(--teal);}
+
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto;}
+.fc{background:var(--white);border-radius:18px;padding:30px;
+  border:1px solid rgba(82,181,168,.1);transition:all .3s;}
+.fc:hover{transform:translateY(-5px);box-shadow:0 18px 44px rgba(82,181,168,.11);}
+.fc-ico{width:52px;height:52px;border-radius:14px;
+  background:rgba(82,181,168,.1);
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;margin-bottom:18px;}
+.fc-t{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;
+  letter-spacing:-.4px;color:var(--text);margin-bottom:8px;}
+.fc-b{font-size:13px;color:var(--grey);line-height:1.75;}
+
+/* ── TESTIMONIALS ────────────────────────── */
+.tg{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:40px auto 0;}
+.tc{background:var(--off);border-radius:18px;padding:28px;
+  border:1px solid rgba(82,181,168,.08);}
+.tc-stars{color:#F4B800;font-size:13px;margin-bottom:12px;}
+.tc-q{font-size:13px;color:var(--text);line-height:1.8;margin-bottom:18px;font-style:italic;}
+.tc-a{display:flex;align-items:center;gap:10px;}
+.tc-av{width:40px;height:40px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.av1{background:rgba(82,181,168,.15);}
+.av2{background:rgba(168,216,210,.3);}
+.av3{background:rgba(58,158,148,.12);}
+.tc-n{font-family:'Bricolage Grotesque',sans-serif;font-size:13px;font-weight:700;color:var(--text);letter-spacing:-.3px;}
+.tc-r{font-size:11px;color:var(--grey);margin-top:2px;}
+
+/* ── APP DOWNLOAD ────────────────────────── */
+.app-dl{padding:72px 5%;background:var(--mint);text-align:center;}
+.app-dl h2{font-family:'Bricolage Grotesque',sans-serif;
+  font-size:clamp(28px,4vw,40px);font-weight:800;letter-spacing:-1.5px;
+  color:var(--text);margin-bottom:12px;}
+.app-dl h2 span{color:var(--teal);}
+.app-dl p{font-size:15px;color:var(--grey);margin-bottom:32px;}
+.store-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.sbtn{display:flex;align-items:center;gap:12px;
+  background:var(--teal-dk);color:var(--white);
+  padding:13px 22px;border-radius:13px;
+  box-shadow:0 6px 20px rgba(30,107,100,.22);transition:all .2s;}
+.sbtn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(30,107,100,.3);}
+.sb-ico{font-size:24px;}
+.sb-sm{font-size:10px;color:rgba(255,255,255,.5);display:block;}
+.sb-lg{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;letter-spacing:-.4px;}
+
+/* ══════════════════════════════════════════════
+   HOW IT WORKS
+══════════════════════════════════════════════ */
+.hiw-hero{
+  background:linear-gradient(135deg,var(--teal-dk),var(--teal-d));
+  padding:80px 5%;text-align:center;
+}
+.hiw-hero h1{font-family:'Bricolage Grotesque',sans-serif;
+  font-size:clamp(32px,5vw,52px);font-weight:800;letter-spacing:-2px;
+  color:var(--white);margin-bottom:14px;}
+.hiw-hero h1 em{color:var(--teal-l);font-style:normal;}
+.hiw-hero p{font-size:16px;color:rgba(255,255,255,.45);max-width:500px;margin:0 auto;line-height:1.75;}
+
+.steps-wrap{display:grid;grid-template-columns:repeat(4,1fr);
+  gap:0;position:relative;margin:40px auto 0;max-width:900px;}
+.steps-wrap::before{
+  content:'';position:absolute;top:34px;left:12%;right:12%;
+  height:2px;background:linear-gradient(90deg,var(--teal),var(--teal-l));
+  z-index:0;
+}
+.step{display:flex;flex-direction:column;align-items:center;
+  text-align:center;padding:0 16px;position:relative;z-index:1;}
+.step-circle{width:68px;height:68px;border-radius:50%;
+  background:linear-gradient(135deg,var(--teal),var(--teal-dk));
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;margin-bottom:20px;
+  box-shadow:0 8px 22px rgba(82,181,168,.28);
+  border:3px solid var(--white);position:relative;}
+.step-n{position:absolute;top:-6px;right:-6px;
+  width:22px;height:22px;border-radius:50%;
+  background:var(--teal-dk);font-family:'Bricolage Grotesque',sans-serif;
+  font-size:10px;font-weight:800;color:var(--white);
+  display:flex;align-items:center;justify-content:center;}
+.step-t{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;
+  letter-spacing:-.4px;color:var(--text);margin-bottom:8px;}
+.step-d{font-size:12px;color:var(--grey);line-height:1.7;}
+
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:900px;margin:0 auto;}
+.dcard{border-radius:18px;padding:32px;display:flex;gap:18px;align-items:flex-start;}
+.dc-mint{background:var(--mint);}
+.dc-white{background:var(--off);border:1px solid rgba(82,181,168,.1);}
+.dc-ico{width:48px;height:48px;border-radius:13px;background:var(--white);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;flex-shrink:0;
+  box-shadow:0 4px 14px rgba(82,181,168,.12);}
+.dc-t{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;
+  letter-spacing:-.4px;color:var(--text);margin-bottom:7px;}
+.dc-b{font-size:13px;color:var(--grey);line-height:1.75;}
+
+/* ══════════════════════════════════════════════
+   VACCINES
+══════════════════════════════════════════════ */
+.vax-hero{background:var(--mint);padding:80px 5%;text-align:center;}
+.vax-hero h1{font-family:'Bricolage Grotesque',sans-serif;
+  font-size:clamp(32px,5vw,52px);font-weight:800;letter-spacing:-2px;
+  color:var(--text);margin-bottom:14px;}
+.vax-hero h1 span{color:var(--teal);}
+.vax-hero p{font-size:16px;color:var(--grey);max-width:500px;margin:0 auto;line-height:1.75;}
+
+.vax-sec{padding:64px 5%;background:var(--white);max-width:1200px;margin:0 auto;}
+.cat-hdr{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.cat-ico{width:40px;height:40px;border-radius:11px;
+  background:rgba(82,181,168,.1);
+  display:flex;align-items:center;justify-content:center;font-size:18px;}
+.cat-name{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;
+  letter-spacing:-.5px;color:var(--text);}
+.vax-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:48px;}
+.vc{background:var(--off);border-radius:14px;padding:20px;
+  border:1px solid rgba(82,181,168,.08);transition:all .25s;cursor:pointer;}
+.vc:hover{background:var(--mint);border-color:rgba(82,181,168,.22);
+  transform:translateY(-3px);box-shadow:0 10px 28px rgba(82,181,168,.09);}
+.vc-badge{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  padding:3px 9px;border-radius:5px;margin-bottom:8px;display:inline-block;}
+.vb-g{background:rgba(82,181,168,.12);color:var(--teal-dk);}
+.vb-o{background:rgba(255,180,0,.1);color:#8A6000;}
+.vb-p{background:rgba(82,181,168,.2);color:var(--teal-dk);}
+.vc-name{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;
+  letter-spacing:-.3px;color:var(--text);margin-bottom:5px;}
+.vc-desc{font-size:11px;color:var(--grey);line-height:1.6;margin-bottom:12px;}
+.vc-price{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;
+  color:var(--teal-dk);letter-spacing:-.5px;}
+
+/* ══════════════════════════════════════════════
+   FOR VACCINATORS
+══════════════════════════════════════════════ */
+.vtor-hero{
+  background:var(--teal-dk);padding:80px 5%;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:48px;align-items:center;
+}
+.vtor-hero h1{font-family:'Bricolage Grotesque',sans-serif;
+  font-size:clamp(30px,4vw,50px);font-weight:800;letter-spacing:-2px;
+  color:var(--white);margin-bottom:18px;line-height:1.05;}
+.vtor-hero h1 em{color:var(--teal-l);font-style:normal;}
+.vtor-hero p{font-size:15px;color:rgba(255,255,255,.45);line-height:1.8;margin-bottom:28px;}
+.btn-vtor{font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;
+  letter-spacing:-.3px;background:var(--white);color:var(--teal-dk);
+  padding:13px 28px;border-radius:11px;
+  box-shadow:0 6px 18px rgba(0,0,0,.14);transition:all .2s;}
+.btn-vtor:hover{transform:translateY(-2px);}
+
+.vtor-cards{display:flex;flex-direction:column;gap:14px;}
+.vic{background:rgba(255,255,255,.06);border-radius:14px;padding:18px;
+  border:1px solid rgba(168,216,210,.1);
+  display:flex;align-items:center;gap:14px;}
+.vic-ico{width:44px;height:44px;border-radius:11px;
+  background:rgba(82,181,168,.15);
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.vic-t{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;
+  color:var(--white);letter-spacing:-.3px;}
+.vic-s{font-size:12px;color:rgba(255,255,255,.38);margin-top:2px;}
+
+.ben-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:40px auto 0;}
+.bc{background:var(--white);border-radius:18px;padding:28px;
+  border:1px solid rgba(82,181,168,.08);text-align:center;}
+.bc-ico{font-size:32px;margin-bottom:14px;}
+.bc-t{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;
+  letter-spacing:-.4px;color:var(--text);margin-bottom:8px;}
+.bc-b{font-size:13px;color:var(--grey);line-height:1.75;}
+
+/* ══════════════════════════════════════════════
+   PRICING
+══════════════════════════════════════════════ */
+.price-hero{background:var(--mint);padding:80px 5%;text-align:center;}
+.price-hero h1{font-family:'Bricolage Grotesque',sans-serif;
+  font-size:clamp(32px,5vw,52px);font-weight:800;letter-spacing:-2px;
+  color:var(--text);margin-bottom:14px;}
+.price-hero h1 span{color:var(--teal);}
+.price-hero p{font-size:16px;color:var(--grey);max-width:480px;margin:0 auto;line-height:1.75;}
+
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;
+  max-width:1000px;margin:0 auto 48px;}
+.plan{border-radius:20px;padding:32px;border:1.5px solid rgba(82,181,168,.12);
+  position:relative;transition:all .25s;}
+.plan:hover{border-color:var(--teal);box-shadow:0 16px 46px rgba(82,181,168,.12);}
+.plan.feat{
+  background:linear-gradient(145deg,var(--teal-dk),var(--teal-d));
+  border-color:transparent;
+  box-shadow:0 20px 56px rgba(30,107,100,.28);}
+.plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  background:var(--teal);color:var(--white);
+  font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  padding:4px 16px;border-radius:100px;}
+.plan-name{font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:700;
+  letter-spacing:-.5px;color:var(--text);margin-bottom:5px;}
+.plan.feat .plan-name{color:var(--white);}
+.plan-desc{font-size:12px;color:var(--grey);margin-bottom:20px;}
+.plan.feat .plan-desc{color:rgba(255,255,255,.45);}
+.plan-price{font-family:'Bricolage Grotesque',sans-serif;font-size:40px;font-weight:800;
+  letter-spacing:-2px;color:var(--text);line-height:1;margin-bottom:5px;}
+.plan.feat .plan-price{color:var(--white);}
+.plan-price sub{font-size:14px;font-weight:500;letter-spacing:0;color:var(--grey);}
+.plan.feat .plan-price sub{color:rgba(255,255,255,.4);}
+.plan-period{font-size:12px;color:var(--grey);margin-bottom:22px;}
+.plan.feat .plan-period{color:rgba(255,255,255,.4);}
+.plan-div{height:1px;background:rgba(82,181,168,.12);margin-bottom:20px;}
+.plan.feat .plan-div{background:rgba(255,255,255,.1);}
+.plan-feats{list-style:none;margin-bottom:28px;}
+.plan-feats li{display:flex;align-items:flex-start;gap:8px;
+  font-size:13px;color:var(--text);margin-bottom:10px;line-height:1.5;}
+.plan.feat .plan-feats li{color:rgba(255,255,255,.8);}
+.plan-feats li::before{content:'✓';color:var(--teal);font-weight:700;flex-shrink:0;}
+.plan.feat .plan-feats li::before{color:var(--teal-l);}
+.plan-btn{display:block;width:100%;padding:13px;border-radius:11px;
+  font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;
+  letter-spacing:-.3px;text-align:center;transition:all .2s;}
+.pbo{background:transparent;color:var(--teal-dk);border:1.5px solid rgba(82,181,168,.3);}
+.pbo:hover{background:var(--mint);}
+.pbs{background:var(--white);color:var(--teal-dk);box-shadow:0 4px 14px rgba(0,0,0,.1);}
+.pbs:hover{transform:translateY(-1px);}
+
+/* ══════════════════════════════════════════════
+   CONTACT
+══════════════════════════════════════════════ */
+.con-hero{
+  background:linear-gradient(135deg,var(--teal-dk),var(--teal-d));
+  padding:80px 5%;text-align:center;
+}
+.con-hero h1{font-family:'Bricolage Grotesque',sans-serif;
+  font-size:clamp(32px,5vw,52px);font-weight:800;letter-spacing:-2px;
+  color:var(--white);margin-bottom:14px;}
+.con-hero h1 em{color:var(--teal-l);font-style:normal;}
+.con-hero p{font-size:16px;color:rgba(255,255,255,.45);max-width:500px;margin:0 auto;line-height:1.75;}
+
+.con-grid{display:grid;grid-template-columns:1fr 1fr;gap:52px;
+  max-width:1000px;margin:0 auto;}
+.cf{background:var(--off);border-radius:20px;padding:36px;border:1px solid rgba(82,181,168,.08);}
+.cf-t{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:700;
+  letter-spacing:-.8px;color:var(--text);margin-bottom:26px;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.fg{margin-bottom:14px;}
+.fl{display:block;font-size:11px;font-weight:600;color:var(--teal-dk);
+  margin-bottom:5px;letter-spacing:.3px;}
+.fi,.fsel,.fta{
+  width:100%;border:1.5px solid rgba(82,181,168,.18);
+  border-radius:11px;padding:12px 14px;
+  font-family:'Outfit',sans-serif;font-size:13px;color:var(--text);
+  background:var(--white);outline:none;transition:border-color .2s;appearance:none;
+}
+.fi:focus,.fsel:focus,.fta:focus{
+  border-color:var(--teal);box-shadow:0 0 0 3px rgba(82,181,168,.09);}
+.fi::placeholder,.fta::placeholder{color:var(--grey);}
+.fta{resize:vertical;min-height:110px;}
+.fsub{width:100%;padding:14px;
+  background:linear-gradient(135deg,var(--teal),var(--teal-dk));
+  color:var(--white);border:none;border-radius:11px;
+  font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;
+  letter-spacing:-.3px;cursor:pointer;transition:all .2s;
+  box-shadow:0 6px 18px rgba(82,181,168,.28);}
+.fsub:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(82,181,168,.38);}
+
+.ci-t{font-family:'Bricolage Grotesque',sans-serif;
+  font-size:clamp(26px,3vw,34px);font-weight:800;letter-spacing:-1px;
+  color:var(--text);line-height:1.1;margin-bottom:14px;}
+.ci-t span{color:var(--teal);}
+.ci-b{font-size:15px;color:var(--grey);line-height:1.8;margin-bottom:28px;}
+.ci-cards{display:flex;flex-direction:column;gap:12px;}
+.cicard{background:var(--off);border-radius:14px;padding:18px;
+  display:flex;gap:14px;align-items:flex-start;
+  border:1px solid rgba(82,181,168,.07);}
+.cic-ico{width:42px;height:42px;border-radius:11px;
+  background:rgba(82,181,168,.1);
+  display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.cic-t{font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;
+  color:var(--text);letter-spacing:-.3px;}
+.cic-v{font-size:13px;color:var(--grey);margin-top:2px;}
+
+/* ══════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════ */
+footer{background:var(--teal-xd);padding:60px 5% 28px;}
+.ft{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px;}
+.fb-logo{font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:800;
+  letter-spacing:-1px;color:var(--white);margin-bottom:12px;}
+.fb-logo span{color:var(--teal-l);}
+.fb-p{font-size:13px;color:rgba(255,255,255,.38);line-height:1.75;
+  max-width:260px;margin-bottom:22px;}
+.socrow{display:flex;gap:8px;}
+.socbtn{width:36px;height:36px;border-radius:9px;
+  background:rgba(255,255,255,.07);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;cursor:pointer;transition:background .2s;}
+.socbtn:hover{background:rgba(82,181,168,.2);}
+.fc-col h4{font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;
+  letter-spacing:-.3px;color:var(--white);margin-bottom:16px;}
+.fc-col ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.fc-col ul li{font-size:13px;color:rgba(255,255,255,.35);cursor:pointer;transition:color .2s;}
+.fc-col ul li:hover{color:var(--teal-l);}
+.fb-bot{border-top:1px solid rgba(255,255,255,.06);padding-top:24px;
+  display:flex;justify-content:space-between;align-items:center;}
+.fbc{font-size:12px;color:rgba(255,255,255,.22);}
+.fbm{font-size:12px;color:rgba(255,255,255,.22);}
+.fbm span{color:var(--teal-l);font-weight:600;}
+
+/* ══════════════════════════════════════════════
+   MOBILE RESPONSIVE — Full rebuild
+══════════════════════════════════════════════ */
+@media(max-width:768px){
+  :root{--nh:60px;}
+  nav{padding:0 4%;}
+  .nlinks{display:none;}
+  .ncta{display:none;}
+  .hbg{display:flex;}
+
+  /* Hero mobile */
+  .hero{padding:40px 4% 48px;min-height:auto;align-items:flex-start;}
+  .hero-inner{grid-template-columns:1fr;gap:36px;}
+  .h1{font-size:38px;letter-spacing:-1.5px;}
+  .hsub{font-size:15px;max-width:100%;}
+  .hbtns{gap:10px;}
+  .hbp{padding:13px 22px;font-size:14px;}
+  .hstats{gap:20px;margin-top:36px;padding-top:24px;}
+  .hs-n{font-size:24px;}
+
+  /* Phone in hero on mobile — smaller and centered */
+  .hero-phone-wrap{order:-1;margin-bottom:8px;}
+  .hero-phone-wrap::before{width:220px;height:220px;}
+  .device{width:200px;border-radius:36px;padding:8px;}
+  .device-inner{border-radius:30px;}
+  .notch{width:72px;height:22px;top:8px;}
+  .notch-speaker{width:32px;}
+  .sbar{padding:26px 12px 8px;}
+  .sbar-time{font-size:11px;}
+  .app-header{padding:10px 12px 16px;}
+  .app-name{font-size:14px;}
+  .app-quick{padding:8px 10px 4px;gap:6px;}
+  .aq-ico{font-size:15px;}
+  .app-card{margin:0 8px 6px;padding:8px 10px;}
+  .ac-ico{width:28px;height:28px;border-radius:7px;font-size:12px;}
+  .ac-title{font-size:9.5px;}
+  .app-book-btn{margin:4px 8px 10px;padding:9px;font-size:9px;}
+  .an-ico{font-size:12px;}
+  .an-lbl{font-size:6px;}
+
+  /* Sections */
+  .sec{padding:48px 4%;}
+  .sec-h{font-size:26px;letter-spacing:-.8px;margin-bottom:28px;}
+
+  /* Features */
+  .feat-grid{grid-template-columns:1fr;gap:14px;}
+  .fc{padding:22px;}
+
+  /* Testimonials */
+  .tg{grid-template-columns:1fr;gap:14px;margin-top:28px;}
+
+  /* App download */
+  .app-dl{padding:48px 4%;}
+  .app-dl h2{font-size:26px;}
+  .store-row{flex-direction:column;align-items:center;}
+  .sbtn{width:100%;max-width:260px;justify-content:center;}
+
+  /* HIW */
+  .hiw-hero{padding:56px 4%;}
+  .hiw-hero h1{font-size:32px;}
+  .steps-wrap{grid-template-columns:1fr 1fr;gap:24px;}
+  .steps-wrap::before{display:none;}
+  .detail-grid{grid-template-columns:1fr;gap:14px;}
+  .dcard{padding:22px;}
+
+  /* Vaccines */
+  .vax-hero{padding:56px 4%;}
+  .vax-hero h1{font-size:32px;}
+  .vax-sec{padding:40px 4%;}
+  .vax-grid{grid-template-columns:1fr 1fr;gap:12px;}
+  .vc{padding:16px;}
+
+  /* Vaccinator */
+  .vtor-hero{grid-template-columns:1fr;padding:56px 4%;gap:32px;}
+  .vtor-hero h1{font-size:32px;}
+  .ben-grid{grid-template-columns:1fr;gap:14px;margin-top:28px;}
+
+  /* Pricing */
+  .price-hero{padding:56px 4%;}
+  .price-hero h1{font-size:32px;}
+  .plans-grid{grid-template-columns:1fr;gap:18px;}
+  .plan{padding:26px;}
+
+  /* Contact */
+  .con-hero{padding:56px 4%;}
+  .con-hero h1{font-size:32px;}
+  .con-grid{grid-template-columns:1fr;gap:32px;}
+  .cf{padding:24px;}
+  .frow{grid-template-columns:1fr;}
+
+  /* Footer */
+  footer{padding:44px 4% 24px;}
+  .ft{grid-template-columns:1fr 1fr;gap:28px;}
+  .fb-bot{flex-direction:column;gap:8px;text-align:center;}
+
+  /* Tag labels */
+  .hiw-hero h1{letter-spacing:-1.5px;}
+}
+
+@media(max-width:380px){
+  .h1{font-size:32px;}
+  .device{width:175px;}
+  .vax-grid{grid-template-columns:1fr;}
+  .ft{grid-template-columns:1fr;}
+  .hstats{gap:14px;}
+  .hs-n{font-size:20px;}
+}
 </style>
 </head>
 <body>
 
-<!-- ===================== NAVBAR ===================== -->
-<nav id="navbar">
-  <div class="nav-logo" onclick="showPage('home')">Vax<span>Door</span></div>
-
-  <div class="nav-links" id="navLinks">
-    <button class="nav-link active" onclick="showPage('home')">Home</button>
-    <button class="nav-link" onclick="showPage('how')">How It Works</button>
-    <button class="nav-link" onclick="showPage('vaccines')">Vaccines</button>
-    <button class="nav-link" onclick="showPage('vaccinator')">For Vaccinators</button>
-    <button class="nav-link" onclick="showPage('pricing')">Pricing</button>
-    <button class="nav-link" onclick="showPage('contact')">Contact</button>
+<!-- ══ NAV ══════════════════════════════════ -->
+<nav id="nav">
+  <div class="nl" onclick="go('home')">Vax<span>Door</span></div>
+  <div class="nlinks" id="nlinks">
+    <button class="nlink act" onclick="go('home')">Home</button>
+    <button class="nlink" onclick="go('how')">How It Works</button>
+    <button class="nlink" onclick="go('vaccines')">Vaccines</button>
+    <button class="nlink" onclick="go('vaccinator')">For Nurses</button>
+    <button class="nlink" onclick="go('pricing')">Pricing</button>
+    <button class="nlink" onclick="go('contact')">Contact</button>
   </div>
-
-  <button class="nav-cta" onclick="showPage('home')">Book Now →</button>
-  <button class="hamburger" id="hamburger" onclick="toggleMobile()">
+  <button class="ncta" onclick="go('contact')">Book Now →</button>
+  <button class="hbg" id="hbg" onclick="toggleMenu()">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
-<!-- Mobile Menu -->
-<div class="mobile-menu" id="mobileMenu" style="display:none;">
-  <button class="nav-link" onclick="showPage('home');toggleMobile()">Home</button>
-  <button class="nav-link" onclick="showPage('how');toggleMobile()">How It Works</button>
-  <button class="nav-link" onclick="showPage('vaccines');toggleMobile()">Vaccines</button>
-  <button class="nav-link" onclick="showPage('vaccinator');toggleMobile()">For Vaccinators</button>
-  <button class="nav-link" onclick="showPage('pricing');toggleMobile()">Pricing</button>
-  <button class="nav-link" onclick="showPage('contact');toggleMobile()">Contact</button>
-  <button class="nav-cta" onclick="showPage('contact');toggleMobile()">Book Now →</button>
+<div class="mmenu" id="mmenu">
+  <button class="nlink" onclick="go('home');closeMenu()">🏠 Home</button>
+  <button class="nlink" onclick="go('how');closeMenu()">⚙️ How It Works</button>
+  <button class="nlink" onclick="go('vaccines');closeMenu()">💉 Vaccines</button>
+  <button class="nlink" onclick="go('vaccinator');closeMenu()">👩‍⚕️ For Nurses</button>
+  <button class="nlink" onclick="go('pricing');closeMenu()">💰 Pricing</button>
+  <button class="nlink" onclick="go('contact');closeMenu()">📞 Contact</button>
+  <button class="ncta" onclick="go('contact');closeMenu()">Book Now →</button>
 </div>
 
-<!-- ===================== HOME PAGE ===================== -->
-<div class="page active" id="page-home">
+<!-- ══════════════════════════════════════════
+     HOME
+══════════════════════════════════════════════ -->
+<div class="page act" id="page-home">
 
-  <!-- Hero -->
   <section class="hero">
-    <div class="hero-glow hero-glow-1"></div>
-    <div class="hero-glow hero-glow-2"></div>
+    <div class="h-glow hg1"></div>
+    <div class="h-glow hg2"></div>
     <div class="hero-inner">
+
       <div>
-        <div class="hero-eyebrow">🇮🇳 Launched across India · 2026</div>
-        <h1 class="hero-h1">Your Vaccine.<br/><em>Your Doorstep.</em></h1>
-        <p class="hero-sub">Book a certified nurse to vaccinate you and your family — at home, at work, or anywhere. Like ordering food, but for your health.</p>
-        <div class="hero-actions">
-          <button class="btn-hero-primary" onclick="showPage('vaccines')">Browse Vaccines →</button>
-          <button class="btn-hero-ghost" onclick="showPage('how')">▶ See how it works</button>
+        <div class="h-pill">🇮🇳 India's First Home Vaccination Service</div>
+        <h1 class="h1">Your Vaccine.<br/><em>Your Doorstep.</em></h1>
+        <p class="hsub">Book a certified nurse to vaccinate you and your family at home, at work, or anywhere. Like ordering food — but for your health.</p>
+        <div class="hbtns">
+          <button class="hbp" onclick="go('vaccines')">Browse Vaccines →</button>
+          <button class="hbg2" onclick="go('how')">▶ See how it works</button>
         </div>
-        <div class="hero-stats">
-          <div class="stat-item">
-            <div class="stat-num">50<span>K+</span></div>
-            <div class="stat-lbl">Vaccines Delivered</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-num">200<span>+</span></div>
-            <div class="stat-lbl">Certified Nurses</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-num">4.9<span>★</span></div>
-            <div class="stat-lbl">Average Rating</div>
-          </div>
+        <div class="hstats">
+          <div><div class="hs-n">50<span>K+</span></div><div class="hs-l">Vaccines Delivered</div></div>
+          <div><div class="hs-n">200<span>+</span></div><div class="hs-l">Certified Nurses</div></div>
+          <div><div class="hs-n">4.9<span>★</span></div><div class="hs-l">Avg Rating</div></div>
         </div>
       </div>
+
+      <!-- ── REDESIGNED PHONE ── -->
       <div class="hero-phone-wrap">
-        <div class="hero-phone">
-          <div class="hp-screen">
-            <div class="hp-status"><span class="hp-time">9:41</span><span class="hp-ico">▶▶▮</span></div>
-            <div class="hp-topbar">
-              <div class="hp-hi">Good morning 👋</div>
-              <div class="hp-name">Subh Tripathy</div>
+        <div class="device">
+          <div class="device-inner">
+            <div class="notch">
+              <div class="notch-speaker"></div>
+              <div class="notch-cam"></div>
             </div>
-            <div class="hp-body">
-              <div class="hp-section-lbl">Due Soon</div>
-              <div class="hp-card">
-                <div class="hp-cico hpc-b">💉</div>
-                <div><div class="hp-ctitle">Flu Vaccine</div><div class="hp-csub">Due in 3 days · Age 28</div></div>
+            <div class="sbar">
+              <span class="sbar-time">9:41</span>
+              <div class="sbar-icons">
+                <span>▶▶</span>
+                <span>📶</span>
+                <span>🔋</span>
               </div>
-              <div class="hp-card">
-                <div class="hp-cico hpc-l">🧒</div>
-                <div><div class="hp-ctitle">MMR — Aryan</div><div class="hp-csub">Due in 7 days · Age 2</div></div>
+            </div>
+            <div class="app-screen">
+              <div class="app-header">
+                <div class="app-hello">Good morning 👋</div>
+                <div class="app-name">Subhabrata Tripathy</div>
+                <div class="app-subtitle">Bangalore, Karnataka</div>
+                <div class="app-search">
+                  <span class="app-search-icon">🔍</span>
+                  <span class="app-search-text">Search vaccines...</span>
+                </div>
               </div>
-              <div class="hp-btn">+ Book Home Visit</div>
+              <div class="app-quick">
+                <div class="aq-item"><div class="aq-ico">💉</div><div class="aq-lbl">Book</div></div>
+                <div class="aq-item"><div class="aq-ico">📋</div><div class="aq-lbl">Records</div></div>
+                <div class="aq-item"><div class="aq-ico">👨‍👩‍👧</div><div class="aq-lbl">Family</div></div>
+                <div class="aq-item"><div class="aq-ico">🧾</div><div class="aq-lbl">Certs</div></div>
+              </div>
+              <div class="app-section-label">Due Soon</div>
+              <div class="app-card">
+                <div class="ac-ico aci-b">💉</div>
+                <div style="flex:1">
+                  <div class="ac-title">Flu Vaccine</div>
+                  <div class="ac-sub">For you · Age 28</div>
+                </div>
+                <div class="ac-badge">Due in 3d</div>
+              </div>
+              <div class="app-card">
+                <div class="ac-ico aci-l">🧒</div>
+                <div style="flex:1">
+                  <div class="ac-title">MMR — Aryan</div>
+                  <div class="ac-sub">Child · Age 2</div>
+                </div>
+                <div class="ac-badge due">Overdue</div>
+              </div>
+              <div class="app-book-btn">+ Book Home Visit</div>
+              <div class="app-nav">
+                <div class="an-item active"><div class="an-ico">🏠</div><div class="an-lbl">Home</div></div>
+                <div class="an-item"><div class="an-ico">💉</div><div class="an-lbl">Book</div></div>
+                <div class="an-item"><div class="an-ico">📋</div><div class="an-lbl">Records</div></div>
+                <div class="an-item"><div class="an-ico">👤</div><div class="an-lbl">Profile</div></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
     </div>
   </section>
 
   <!-- Features -->
-  <section class="features-strip">
-    <div class="strip-label">Why VaxDoor</div>
-    <div class="strip-title">Everything you need,<br/>nothing you don't</div>
-    <div class="features-grid">
-      <div class="feat-card">
-        <div class="feat-ico">🏠</div>
-        <div class="feat-title">At Your Location</div>
-        <div class="feat-body">Choose your home, office, or any address. Our certified vaccinator comes to you — no hospital queues, no waiting rooms.</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-ico">🛡️</div>
-        <div class="feat-title">Certified & Verified</div>
-        <div class="feat-body">Every nurse is a registered RN, background-checked, and trained in cold-chain protocols. Your safety is non-negotiable.</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-ico">📱</div>
-        <div class="feat-title">Book in 60 Seconds</div>
-        <div class="feat-body">Pick your vaccine, enter your location, choose a time slot. Pay via UPI or card. Done. The nurse is on their way.</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-ico">👨‍👩‍👧</div>
-        <div class="feat-title">Whole Family</div>
-        <div class="feat-body">Manage vaccines for everyone — newborns, children, adults, and elderly parents — all from one account.</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-ico">🧾</div>
-        <div class="feat-title">Digital Certificate</div>
-        <div class="feat-body">Instant PDF certificate after every vaccination. CoWIN-linked for COVID doses. Share to schools, airlines, and offices.</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-ico">🌐</div>
-        <div class="feat-title">10+ Languages</div>
-        <div class="feat-body">Hindi, English, Bengali, Tamil, Telugu, Marathi and more. VaxDoor speaks India's language — all of them.</div>
-      </div>
+  <section class="sec sec-off">
+    <div class="sec-center">
+      <span class="sec-tag">Why VaxDoor</span>
+      <h2 class="sec-h">Everything you need,<br/>nothing you don't</h2>
+    </div>
+    <div class="feat-grid">
+      <div class="fc"><div class="fc-ico">🏠</div><div class="fc-t">At Your Location</div><div class="fc-b">Home, office, or any address. Our certified vaccinator comes to you — no hospital queues, no waiting rooms ever.</div></div>
+      <div class="fc"><div class="fc-ico">🛡️</div><div class="fc-t">Certified & Verified</div><div class="fc-b">Every nurse is a registered RN, background-checked, and trained in cold-chain protocols. Your safety is non-negotiable.</div></div>
+      <div class="fc"><div class="fc-ico">📱</div><div class="fc-t">Book in 60 Seconds</div><div class="fc-b">Pick your vaccine, enter location, choose a time slot. Pay via UPI or card. Done — the nurse is on their way.</div></div>
+      <div class="fc"><div class="fc-ico">👨‍👩‍👧</div><div class="fc-t">Whole Family</div><div class="fc-b">Manage vaccines for everyone — newborns, children, adults, and elderly parents — all from one account.</div></div>
+      <div class="fc"><div class="fc-ico">🧾</div><div class="fc-t">Digital Certificate</div><div class="fc-b">Instant PDF certificate after every vaccination. CoWIN-linked for COVID doses. Share to schools, airlines, offices.</div></div>
+      <div class="fc"><div class="fc-ico">🌐</div><div class="fc-t">10+ Indian Languages</div><div class="fc-b">Hindi, English, Bengali, Tamil, Telugu, Marathi and more. VaxDoor speaks India's languages — all of them.</div></div>
     </div>
   </section>
 
   <!-- Testimonials -->
-  <section class="testimonials">
-    <div class="section-header">
-      <span class="sect-label" style="color:var(--teal)">What People Say</span>
-      <h2>Trusted by families <span>across India</span></h2>
+  <section class="sec">
+    <div class="sec-center">
+      <span class="sec-tag">What People Say</span>
+      <h2 class="sec-h">Trusted by families <span>across India</span></h2>
     </div>
-    <div class="testi-grid">
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <div class="testi-quote">"My daughter is 18 months old and getting her to a hospital was always a nightmare. VaxDoor sent a lovely nurse home and it was done in 10 minutes. Absolutely life-changing."</div>
-        <div class="testi-author">
-          <div class="testi-avatar av-1">👩</div>
-          <div><div class="testi-name">Priya Sharma</div><div class="testi-role">Mother of 2 · Bangalore</div></div>
-        </div>
+    <div class="tg">
+      <div class="tc">
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-q">"My daughter is 18 months old and getting her to a hospital was always a nightmare. VaxDoor sent a lovely nurse home and it was done in 10 minutes. Absolutely life-changing."</div>
+        <div class="tc-a"><div class="tc-av av1">👩</div><div><div class="tc-n">Priya Sharma</div><div class="tc-r">Mother of 2 · Bangalore</div></div></div>
       </div>
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <div class="testi-quote">"My 78-year-old father can barely walk. VaxDoor made his flu shot happen without him leaving the house. The nurse was professional and gentle. 10/10."</div>
-        <div class="testi-author">
-          <div class="testi-avatar av-2">👨</div>
-          <div><div class="testi-name">Arjun Mehta</div><div class="testi-role">Working Professional · Mumbai</div></div>
-        </div>
+      <div class="tc">
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-q">"My 78-year-old father can barely walk. VaxDoor made his flu shot happen without him leaving the house. The nurse was professional and gentle. 10/10."</div>
+        <div class="tc-a"><div class="tc-av av2">👨</div><div><div class="tc-n">Arjun Mehta</div><div class="tc-r">Working Professional · Mumbai</div></div></div>
       </div>
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <div class="testi-quote">"Booked 4 flu shots for our entire team at the office. The vaccinator arrived on time, everything was clean and professional. Will book again next year."</div>
-        <div class="testi-author">
-          <div class="testi-avatar av-3">👩‍💼</div>
-          <div><div class="testi-name">Kavita Rao</div><div class="testi-role">Office Manager · Hyderabad</div></div>
-        </div>
+      <div class="tc">
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-q">"Booked 4 flu shots for our entire team at the office. The vaccinator arrived on time, everything was professional and clean. Will book again every year."</div>
+        <div class="tc-a"><div class="tc-av av3">👩‍💼</div><div><div class="tc-n">Kavita Rao</div><div class="tc-r">Office Manager · Hyderabad</div></div></div>
       </div>
     </div>
   </section>
 
-  <!-- App Download -->
-  <section class="app-download">
+  <section class="app-dl">
     <h2>Download <span>VaxDoor</span></h2>
     <p>Available on Android and iOS. Free to download. Pay only when you book.</p>
-    <div class="store-btns">
-      <button class="store-btn">
-        <div class="store-btn-ico">🤖</div>
-        <div class="store-btn-text">
-          <span class="sbt-small">Get it on</span>
-          <span class="sbt-big">Google Play</span>
-        </div>
-      </button>
-      <button class="store-btn">
-        <div class="store-btn-ico">🍎</div>
-        <div class="store-btn-text">
-          <span class="sbt-small">Download on the</span>
-          <span class="sbt-big">App Store</span>
-        </div>
-      </button>
+    <div class="store-row">
+      <button class="sbtn"><div class="sb-ico">🤖</div><div><span class="sb-sm">Get it on</span><span class="sb-lg">Google Play</span></div></button>
+      <button class="sbtn"><div class="sb-ico">🍎</div><div><span class="sb-sm">Download on the</span><span class="sb-lg">App Store</span></div></button>
     </div>
   </section>
-
 </div>
 
-<!-- ===================== HOW IT WORKS ===================== -->
+<!-- ══════════════════════════════════════════
+     HOW IT WORKS
+══════════════════════════════════════════════ -->
 <div class="page" id="page-how">
   <div class="hiw-hero">
     <h1>How <em>VaxDoor</em> Works</h1>
-    <p>From booking to vaccination — the entire process takes under 3 minutes. Here's how it goes.</p>
+    <p>From booking to vaccination — the entire process takes under 3 minutes. Here's exactly how it goes.</p>
   </div>
 
-  <div class="hiw-steps">
-    <div class="section-header">
-      <span class="sect-label" style="color:var(--teal)">Simple Process</span>
-      <h2>4 easy steps to get <span>vaccinated</span></h2>
+  <section class="sec">
+    <div class="sec-center">
+      <span class="sec-tag">Simple Process</span>
+      <h2 class="sec-h">4 easy steps to get <span>vaccinated</span></h2>
     </div>
-    <div class="steps-track">
-      <div class="step-item">
-        <div class="step-circle"><span class="step-num">1</span>🔍</div>
-        <div class="step-title">Browse & Select</div>
-        <div class="step-desc">Browse our full catalogue. Filter by age group, disease, or brand. Read what each vaccine is for.</div>
-      </div>
-      <div class="step-item">
-        <div class="step-circle"><span class="step-num">2</span>📍</div>
-        <div class="step-title">Enter Location</div>
-        <div class="step-desc">Enter your home address, pincode, or drop a pin. We'll show you available time slots near you.</div>
-      </div>
-      <div class="step-item">
-        <div class="step-circle"><span class="step-num">3</span>💳</div>
-        <div class="step-title">Pay Securely</div>
-        <div class="step-desc">Pay via UPI, card, or net banking. 100% secure Razorpay gateway. You'll get an instant confirmation.</div>
-      </div>
-      <div class="step-item">
-        <div class="step-circle"><span class="step-num">4</span>💉</div>
-        <div class="step-title">Get Vaccinated</div>
-        <div class="step-desc">The nurse arrives, verifies ID, administers the vaccine. Digital certificate is auto-generated immediately.</div>
-      </div>
+    <div class="steps-wrap">
+      <div class="step"><div class="step-circle"><span class="step-n">1</span>🔍</div><div class="step-t">Browse & Select</div><div class="step-d">Browse our catalogue. Filter by age group, disease, or brand. Read what each vaccine does.</div></div>
+      <div class="step"><div class="step-circle"><span class="step-n">2</span>📍</div><div class="step-t">Enter Location</div><div class="step-d">Enter your home address or pincode. We'll show available time slots near you.</div></div>
+      <div class="step"><div class="step-circle"><span class="step-n">3</span>💳</div><div class="step-t">Pay Securely</div><div class="step-d">Pay via UPI, card, or net banking. 100% secure. You'll get instant confirmation.</div></div>
+      <div class="step"><div class="step-circle"><span class="step-n">4</span>💉</div><div class="step-t">Get Vaccinated</div><div class="step-d">Nurse arrives, verifies, administers. Digital certificate generated immediately.</div></div>
     </div>
-  </div>
+  </section>
 
-  <div class="hiw-details">
-    <div class="section-header" style="margin-bottom:36px;">
-      <span class="sect-label" style="color:var(--teal)">More Details</span>
-      <h2>Everything handled <span>for you</span></h2>
+  <section class="sec sec-off">
+    <div class="sec-center">
+      <span class="sec-tag">Details</span>
+      <h2 class="sec-h">Everything handled <span>for you</span></h2>
     </div>
     <div class="detail-grid">
-      <div class="detail-card dc-mint">
-        <div class="dc-ico">🌡️</div>
-        <div>
-          <div class="dc-title">Cold Chain Guaranteed</div>
-          <div class="dc-body">All vaccines are stored at WHO-mandated 2–8°C. Every vaccinator carries a temperature-logged cold pack. We never compromise on vaccine integrity.</div>
-        </div>
-      </div>
-      <div class="detail-card dc-white">
-        <div class="dc-ico">📍</div>
-        <div>
-          <div class="dc-title">Live Nurse Tracking</div>
-          <div class="dc-body">Once assigned, you can track your vaccinator in real-time on a map — exactly like tracking a Swiggy delivery. Know exactly when they'll arrive.</div>
-        </div>
-      </div>
-      <div class="detail-card dc-white">
-        <div class="dc-ico">🧾</div>
-        <div>
-          <div class="dc-title">Instant Certificate</div>
-          <div class="dc-body">Your digital vaccination certificate is generated the moment the nurse marks the dose as administered. Download it as PDF or share directly to WhatsApp.</div>
-        </div>
-      </div>
-      <div class="detail-card dc-mint">
-        <div class="dc-ico">🆘</div>
-        <div>
-          <div class="dc-title">Adverse Reaction Protocol</div>
-          <div class="dc-body">Our nurses are trained for post-vaccination monitoring. If any adverse reaction occurs, our SOS protocol connects you to an emergency doctor within minutes.</div>
-        </div>
-      </div>
+      <div class="dcard dc-mint"><div class="dc-ico">🌡️</div><div><div class="dc-t">Cold Chain Guaranteed</div><div class="dc-b">All vaccines stored at WHO-mandated 2–8°C. Every vaccinator carries a temperature-logged cold pack. Zero compromise on integrity.</div></div></div>
+      <div class="dcard dc-white"><div class="dc-ico">📍</div><div><div class="dc-t">Live Nurse Tracking</div><div class="dc-b">Once assigned, track your vaccinator in real-time on a map — exactly like tracking a Swiggy delivery. Know exactly when they'll arrive.</div></div></div>
+      <div class="dcard dc-white"><div class="dc-ico">🧾</div><div><div class="dc-t">Instant Certificate</div><div class="dc-b">Digital vaccination certificate generated the moment the nurse marks the dose administered. Download as PDF or share directly to WhatsApp.</div></div></div>
+      <div class="dcard dc-mint"><div class="dc-ico">🆘</div><div><div class="dc-t">Adverse Reaction Protocol</div><div class="dc-b">Our nurses are trained for post-vaccination monitoring. SOS protocol connects you to an emergency doctor within minutes if needed.</div></div></div>
     </div>
-  </div>
+  </section>
 
-  <section class="app-download">
+  <section class="app-dl">
     <h2>Ready to <span>get started?</span></h2>
     <p>Download VaxDoor and book your first home vaccination today.</p>
-    <div class="store-btns">
-      <button class="store-btn"><div class="store-btn-ico">🤖</div><div class="store-btn-text"><span class="sbt-small">Get it on</span><span class="sbt-big">Google Play</span></div></button>
-      <button class="store-btn"><div class="store-btn-ico">🍎</div><div class="store-btn-text"><span class="sbt-small">Download on the</span><span class="sbt-big">App Store</span></div></button>
+    <div class="store-row">
+      <button class="sbtn"><div class="sb-ico">🤖</div><div><span class="sb-sm">Get it on</span><span class="sb-lg">Google Play</span></div></button>
+      <button class="sbtn"><div class="sb-ico">🍎</div><div><span class="sb-sm">Download on the</span><span class="sb-lg">App Store</span></div></button>
     </div>
   </section>
 </div>
 
-<!-- ===================== VACCINES PAGE ===================== -->
+<!-- ══════════════════════════════════════════
+     VACCINES
+══════════════════════════════════════════════ -->
 <div class="page" id="page-vaccines">
-  <div class="vaccines-hero">
+  <div class="vax-hero">
     <h1>Our <span>Vaccine</span> Catalogue</h1>
-    <p>All vaccines come with certified cold-chain delivery and a digital certificate. Pricing includes nurse visit fee.</p>
+    <p>All vaccines include certified cold-chain delivery and a digital certificate. Pricing includes nurse visit fee.</p>
   </div>
-
-  <div class="vaccines-grid-section">
-
-    <div class="category-block">
-      <div class="cat-header"><div class="cat-ico">🍼</div><div class="cat-name">Baby & Child Vaccines</div></div>
-      <div class="vax-grid">
-        <div class="vax-card"><div class="vax-badge vb-govt">Govt. Schedule</div><div class="vax-name">BCG</div><div class="vax-desc">Protects against tuberculosis. Given at birth.</div><div class="vax-price">₹499</div></div>
-        <div class="vax-card"><div class="vax-badge vb-govt">Govt. Schedule</div><div class="vax-name">Hepatitis B</div><div class="vax-desc">3-dose series. Prevents hepatitis B infection.</div><div class="vax-price">₹599</div></div>
-        <div class="vax-card"><div class="vax-badge vb-govt">Govt. Schedule</div><div class="vax-name">DPT / Pentavalent</div><div class="vax-desc">Diphtheria, pertussis, tetanus combined.</div><div class="vax-price">₹699</div></div>
-        <div class="vax-card"><div class="vax-badge vb-pop">Popular</div><div class="vax-name">MMR</div><div class="vax-desc">Measles, mumps, rubella. Given at 9 and 15 months.</div><div class="vax-price">₹799</div></div>
-        <div class="vax-card"><div class="vax-badge vb-opt">Optional</div><div class="vax-name">Varicella</div><div class="vax-desc">Chickenpox vaccine. Highly recommended.</div><div class="vax-price">₹1,299</div></div>
-        <div class="vax-card"><div class="vax-badge vb-opt">Optional</div><div class="vax-name">Rotavirus</div><div class="vax-desc">Prevents severe diarrhea in infants.</div><div class="vax-price">₹999</div></div>
-        <div class="vax-card"><div class="vax-badge vb-opt">Optional</div><div class="vax-name">Pneumococcal (PCV)</div><div class="vax-desc">Prevents pneumonia and meningitis.</div><div class="vax-price">₹2,499</div></div>
-        <div class="vax-card"><div class="vax-badge vb-pop">Popular</div><div class="vax-name">Typhoid (Vi)</div><div class="vax-desc">For children above 2 years. Single dose.</div><div class="vax-price">₹599</div></div>
-      </div>
+  <div class="vax-sec">
+    <div class="cat-hdr"><div class="cat-ico">🍼</div><div class="cat-name">Baby & Child Vaccines</div></div>
+    <div class="vax-grid">
+      <div class="vc"><div class="vc-badge vb-g">Govt. Schedule</div><div class="vc-name">BCG</div><div class="vc-desc">Protects against tuberculosis. Given at birth.</div><div class="vc-price">₹499</div></div>
+      <div class="vc"><div class="vc-badge vb-g">Govt. Schedule</div><div class="vc-name">Hepatitis B</div><div class="vc-desc">3-dose series. Prevents hepatitis B infection.</div><div class="vc-price">₹599</div></div>
+      <div class="vc"><div class="vc-badge vb-g">Govt. Schedule</div><div class="vc-name">DPT / Penta</div><div class="vc-desc">Diphtheria, pertussis, tetanus combined.</div><div class="vc-price">₹699</div></div>
+      <div class="vc"><div class="vc-badge vb-p">Popular</div><div class="vc-name">MMR</div><div class="vc-desc">Measles, mumps, rubella. At 9 & 15 months.</div><div class="vc-price">₹799</div></div>
+      <div class="vc"><div class="vc-badge vb-o">Optional</div><div class="vc-name">Varicella</div><div class="vc-desc">Chickenpox vaccine. Highly recommended.</div><div class="vc-price">₹1,299</div></div>
+      <div class="vc"><div class="vc-badge vb-o">Optional</div><div class="vc-name">Rotavirus</div><div class="vc-desc">Prevents severe diarrhea in infants.</div><div class="vc-price">₹999</div></div>
+      <div class="vc"><div class="vc-badge vb-o">Optional</div><div class="vc-name">PCV</div><div class="vc-desc">Prevents pneumonia & meningitis.</div><div class="vc-price">₹2,499</div></div>
+      <div class="vc"><div class="vc-badge vb-p">Popular</div><div class="vc-name">Typhoid (Vi)</div><div class="vc-desc">For children above 2 years. Single dose.</div><div class="vc-price">₹599</div></div>
     </div>
 
-    <div class="category-block">
-      <div class="cat-header"><div class="cat-ico">🧑</div><div class="cat-name">Adult Vaccines</div></div>
-      <div class="vax-grid">
-        <div class="vax-card"><div class="vax-badge vb-pop">Popular</div><div class="vax-name">Influenza (Flu)</div><div class="vax-desc">Annual flu shot. Recommended every year.</div><div class="vax-price">₹799</div></div>
-        <div class="vax-card"><div class="vax-badge vb-opt">Optional</div><div class="vax-name">Hepatitis A + B</div><div class="vax-desc">Combined protection against both strains.</div><div class="vax-price">₹1,499</div></div>
-        <div class="vax-card"><div class="vax-badge vb-pop">Popular</div><div class="vax-name">Tetanus Booster</div><div class="vax-desc">Td booster every 10 years for adults.</div><div class="vax-price">₹399</div></div>
-        <div class="vax-card"><div class="vax-badge vb-pop">Popular</div><div class="vax-name">COVID-19 Booster</div><div class="vax-desc">Precaution dose for full protection.</div><div class="vax-price">₹499</div></div>
-      </div>
+    <div class="cat-hdr"><div class="cat-ico">🧑</div><div class="cat-name">Adult Vaccines</div></div>
+    <div class="vax-grid">
+      <div class="vc"><div class="vc-badge vb-p">Popular</div><div class="vc-name">Influenza</div><div class="vc-desc">Annual flu shot. Recommended every year.</div><div class="vc-price">₹799</div></div>
+      <div class="vc"><div class="vc-badge vb-o">Optional</div><div class="vc-name">Hepatitis A+B</div><div class="vc-desc">Combined protection against both strains.</div><div class="vc-price">₹1,499</div></div>
+      <div class="vc"><div class="vc-badge vb-p">Popular</div><div class="vc-name">Tetanus Booster</div><div class="vc-desc">Td booster every 10 years for adults.</div><div class="vc-price">₹399</div></div>
+      <div class="vc"><div class="vc-badge vb-p">Popular</div><div class="vc-name">COVID Booster</div><div class="vc-desc">Precaution dose for full protection.</div><div class="vc-price">₹499</div></div>
     </div>
 
-    <div class="category-block">
-      <div class="cat-header"><div class="cat-ico">👩‍⚕️</div><div class="cat-name">Women's Health</div></div>
-      <div class="vax-grid">
-        <div class="vax-card"><div class="vax-badge vb-pop">Popular</div><div class="vax-name">HPV (Gardasil 9)</div><div class="vax-desc">Prevents cervical cancer. Girls & young women.</div><div class="vax-price">₹3,499</div></div>
-        <div class="vax-card"><div class="vax-badge vb-opt">Optional</div><div class="vax-name">Rubella</div><div class="vax-desc">Critical before pregnancy. Prevents birth defects.</div><div class="vax-price">₹699</div></div>
-      </div>
+    <div class="cat-hdr"><div class="cat-ico">👩‍⚕️</div><div class="cat-name">Women's Health</div></div>
+    <div class="vax-grid">
+      <div class="vc"><div class="vc-badge vb-p">Popular</div><div class="vc-name">HPV Gardasil 9</div><div class="vc-desc">Prevents cervical cancer. Girls & young women.</div><div class="vc-price">₹3,499</div></div>
+      <div class="vc"><div class="vc-badge vb-o">Optional</div><div class="vc-name">Rubella</div><div class="vc-desc">Critical before pregnancy. Prevents birth defects.</div><div class="vc-price">₹699</div></div>
     </div>
 
-    <div class="category-block">
-      <div class="cat-header"><div class="cat-ico">👴</div><div class="cat-name">Senior Citizens</div></div>
-      <div class="vax-grid">
-        <div class="vax-card"><div class="vax-badge vb-pop">Popular</div><div class="vax-name">Pneumococcal (PPSV23)</div><div class="vax-desc">For adults 65+. Prevents serious pneumonia.</div><div class="vax-price">₹2,999</div></div>
-        <div class="vax-card"><div class="vax-badge vb-opt">Optional</div><div class="vax-name">Shingles (Shingrix)</div><div class="vax-desc">Prevents painful shingles outbreak in elderly.</div><div class="vax-price">₹5,499</div></div>
-        <div class="vax-card"><div class="vax-badge vb-pop">Popular</div><div class="vax-name">Flu (High Dose)</div><div class="vax-desc">Stronger flu vaccine formulated for seniors.</div><div class="vax-price">₹1,199</div></div>
-      </div>
+    <div class="cat-hdr"><div class="cat-ico">👴</div><div class="cat-name">Senior Citizens</div></div>
+    <div class="vax-grid">
+      <div class="vc"><div class="vc-badge vb-p">Popular</div><div class="vc-name">Pneumococcal</div><div class="vc-desc">For adults 65+. Prevents serious pneumonia.</div><div class="vc-price">₹2,999</div></div>
+      <div class="vc"><div class="vc-badge vb-o">Optional</div><div class="vc-name">Shingles</div><div class="vc-desc">Prevents painful shingles outbreak in elderly.</div><div class="vc-price">₹5,499</div></div>
+      <div class="vc"><div class="vc-badge vb-p">Popular</div><div class="vc-name">Flu (High Dose)</div><div class="vc-desc">Stronger flu vaccine formulated for seniors.</div><div class="vc-price">₹1,199</div></div>
     </div>
-
   </div>
 </div>
 
-<!-- ===================== FOR VACCINATORS ===================== -->
+<!-- ══════════════════════════════════════════
+     FOR VACCINATORS
+══════════════════════════════════════════════ -->
 <div class="page" id="page-vaccinator">
-
   <div class="vtor-hero">
     <div>
-      <div class="hero-eyebrow" style="margin-bottom:24px;">💼 Join Our Vaccinator Network</div>
+      <div class="h-pill" style="margin-bottom:20px;">💼 Join Our Vaccinator Network</div>
       <h1>Earn More.<br/><em>Work Flexibly.</em><br/>Help India.</h1>
-      <p>Join 200+ certified nurses already earning with VaxDoor. Set your own schedule, work in your own area, and make a real difference.</p>
-      <button class="btn-vtor" onclick="showPage('contact')">Apply to Join →</button>
+      <p>Join 200+ certified nurses already earning with VaxDoor. Set your own schedule, work in your area, and make a real difference in people's lives.</p>
+      <button class="btn-vtor" onclick="go('contact')">Apply to Join →</button>
     </div>
-    <div class="vtor-card-stack">
-      <div class="vtor-info-card">
-        <div class="vic-ico">💰</div>
-        <div><div class="vic-title">₹800–1,200 per visit</div><div class="vic-sub">Average earnings per booking</div></div>
-      </div>
-      <div class="vtor-info-card">
-        <div class="vic-ico">⏰</div>
-        <div><div class="vic-title">Flexible Schedule</div><div class="vic-sub">Work mornings, evenings, or weekends</div></div>
-      </div>
-      <div class="vtor-info-card">
-        <div class="vic-ico">📍</div>
-        <div><div class="vic-title">Your Neighbourhood</div><div class="vic-sub">Work only in pincodes you choose</div></div>
-      </div>
-      <div class="vtor-info-card">
-        <div class="vic-ico">📱</div>
-        <div><div class="vic-title">Dedicated Nurse App</div><div class="vic-sub">Accept, navigate, complete, earn</div></div>
-      </div>
+    <div class="vtor-cards">
+      <div class="vic"><div class="vic-ico">💰</div><div><div class="vic-t">₹800–1,200 per visit</div><div class="vic-s">Average earnings per booking</div></div></div>
+      <div class="vic"><div class="vic-ico">⏰</div><div><div class="vic-t">Flexible Schedule</div><div class="vic-s">Work mornings, evenings, or weekends</div></div></div>
+      <div class="vic"><div class="vic-ico">📍</div><div><div class="vic-t">Your Neighbourhood</div><div class="vic-s">Work only in pincodes you choose</div></div></div>
+      <div class="vic"><div class="vic-ico">📱</div><div><div class="vic-t">Dedicated Nurse App</div><div class="vic-s">Accept, navigate, complete, earn</div></div></div>
     </div>
   </div>
 
-  <div class="vtor-benefits">
-    <div class="section-header">
-      <span class="sect-label" style="color:var(--teal)">Benefits</span>
-      <h2>Why nurses love <span>VaxDoor</span></h2>
+  <section class="sec sec-off">
+    <div class="sec-center">
+      <span class="sec-tag">Benefits</span>
+      <h2 class="sec-h">Why nurses love <span>VaxDoor</span></h2>
     </div>
-    <div class="benefits-grid">
-      <div class="ben-card">
-        <div class="ben-ico">💸</div>
-        <div class="ben-title">Weekly Payouts</div>
-        <div class="ben-body">Earnings are transferred to your bank account every Monday. No delays, no paperwork — just clean, consistent pay.</div>
-      </div>
-      <div class="ben-card">
-        <div class="ben-ico">🗺️</div>
-        <div class="ben-title">Route Optimisation</div>
-        <div class="ben-body">The app clusters nearby bookings together and plans the best route for your day — saving you time and travel costs.</div>
-      </div>
-      <div class="ben-card">
-        <div class="ben-ico">📦</div>
-        <div class="ben-title">Vaccine Supply</div>
-        <div class="ben-body">We handle sourcing, cold-chain logistics, and delivery of vaccines to you. You just show up and administer.</div>
-      </div>
-      <div class="ben-card">
-        <div class="ben-ico">🛡️</div>
-        <div class="ben-title">Liability Coverage</div>
-        <div class="ben-body">All VaxDoor nurses are covered under our professional liability insurance. You're protected while you work.</div>
-      </div>
-      <div class="ben-card">
-        <div class="ben-ico">⭐</div>
-        <div class="ben-title">Build Your Reputation</div>
-        <div class="ben-body">Every 5-star review builds your profile. Top-rated nurses get priority bookings and bonuses every month.</div>
-      </div>
-      <div class="ben-card">
-        <div class="ben-ico">📚</div>
-        <div class="ben-title">Free Training</div>
-        <div class="ben-body">Access VaxDoor's free digital training on cold-chain handling, adverse reactions, and app usage before your first booking.</div>
-      </div>
+    <div class="ben-grid">
+      <div class="bc"><div class="bc-ico">💸</div><div class="bc-t">Weekly Payouts</div><div class="bc-b">Earnings transferred to your bank every Monday. No delays, no paperwork — clean consistent pay.</div></div>
+      <div class="bc"><div class="bc-ico">🗺️</div><div class="bc-t">Route Optimisation</div><div class="bc-b">The app clusters nearby bookings and plans the best route — saving time and travel costs.</div></div>
+      <div class="bc"><div class="bc-ico">📦</div><div class="bc-t">Vaccine Supply</div><div class="bc-b">We handle sourcing, cold-chain logistics, and delivery of vaccines to you. Just show up and administer.</div></div>
+      <div class="bc"><div class="bc-ico">🛡️</div><div class="bc-t">Liability Coverage</div><div class="bc-b">All VaxDoor nurses covered under professional liability insurance. You're protected while you work.</div></div>
+      <div class="bc"><div class="bc-ico">⭐</div><div class="bc-t">Build Your Reputation</div><div class="bc-b">Every 5-star review builds your profile. Top-rated nurses get priority bookings and monthly bonuses.</div></div>
+      <div class="bc"><div class="bc-ico">📚</div><div class="bc-t">Free Training</div><div class="bc-b">Access VaxDoor's free digital training on cold-chain handling, adverse reactions, and app usage.</div></div>
     </div>
-  </div>
-
+  </section>
 </div>
 
-<!-- ===================== PRICING ===================== -->
+<!-- ══════════════════════════════════════════
+     PRICING
+══════════════════════════════════════════════ -->
 <div class="page" id="page-pricing">
-  <div class="pricing-hero">
+  <div class="price-hero">
     <h1>Simple, Honest <span>Pricing</span></h1>
     <p>No hidden charges. You see the full price before you book. Vaccine cost + nurse visit fee — that's it.</p>
   </div>
-
-  <div class="pricing-section">
-    <div class="section-header">
-      <span class="sect-label" style="color:var(--teal)">Plans</span>
-      <h2>Choose what <span>works for you</span></h2>
+  <section class="sec">
+    <div class="sec-center">
+      <span class="sec-tag">Plans</span>
+      <h2 class="sec-h">Choose what <span>works for you</span></h2>
     </div>
     <div class="plans-grid">
-
-      <div class="plan-card">
+      <div class="plan">
         <div class="plan-name">Pay Per Visit</div>
         <div class="plan-desc">Best for one-time or occasional use</div>
         <div class="plan-price">₹199 <sub>/ visit</sub></div>
         <div class="plan-period">Convenience fee + vaccine cost</div>
-        <div class="plan-divider"></div>
-        <ul class="plan-features">
+        <div class="plan-div"></div>
+        <ul class="plan-feats">
           <li>Single booking at a time</li>
           <li>Any vaccine from catalogue</li>
           <li>Digital certificate included</li>
           <li>Live nurse tracking</li>
-          <li>Standard response time</li>
         </ul>
-        <button class="plan-btn plan-btn-outline" onclick="showPage('vaccines')">Browse Vaccines</button>
+        <button class="plan-btn pbo" onclick="go('vaccines')">Browse Vaccines</button>
       </div>
 
-      <div class="plan-card featured">
+      <div class="plan feat">
         <div class="plan-badge">Most Popular</div>
         <div class="plan-name">Family Plan</div>
         <div class="plan-desc">Best for families with children</div>
-        <div class="plan-price">₹999 <sub>/ month</sub></div>
-        <div class="plan-period">Billed monthly · Up to 6 members</div>
-        <div class="plan-divider"></div>
-        <ul class="plan-features">
+        <div class="plan-price">₹999 <sub>/ mo</sub></div>
+        <div class="plan-period">Up to 6 family members</div>
+        <div class="plan-div"></div>
+        <ul class="plan-feats">
           <li>Up to 6 family members</li>
           <li>Unlimited bookings</li>
           <li>Zero convenience fee</li>
-          <li>UIP schedule auto-reminders</li>
+          <li>Auto UIP reminders</li>
           <li>Priority nurse assignment</li>
           <li>WhatsApp reminders</li>
           <li>CoWIN sync included</li>
         </ul>
-        <button class="plan-btn plan-btn-solid">Get Family Plan</button>
+        <button class="plan-btn pbs">Get Family Plan</button>
       </div>
 
-      <div class="plan-card">
+      <div class="plan">
         <div class="plan-name">Corporate</div>
-        <div class="plan-desc">For offices, schools & organisations</div>
+        <div class="plan-desc">For offices, schools & orgs</div>
         <div class="plan-price">Custom</div>
         <div class="plan-period">Tailored to your team size</div>
-        <div class="plan-divider"></div>
-        <ul class="plan-features">
+        <div class="plan-div"></div>
+        <ul class="plan-feats">
           <li>Bulk vaccination drives</li>
           <li>Dedicated account manager</li>
           <li>On-site camp setup</li>
-          <li>Branded certificates</li>
           <li>Invoice & GST billing</li>
           <li>Priority scheduling</li>
         </ul>
-        <button class="plan-btn plan-btn-outline" onclick="showPage('contact')">Contact Us</button>
-      </div>
-
-    </div>
-
-    <div style="background:var(--off);border-radius:20px;padding:36px;border:1px solid rgba(82,181,168,0.1);">
-      <div class="section-header" style="margin-bottom:28px;text-align:left;">
-        <span class="sect-label" style="color:var(--teal)">Pricing Note</span>
-        <h2 style="font-size:24px;margin-bottom:0;">How pricing works</h2>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
-        <div style="background:var(--white);border-radius:14px;padding:22px;border:1px solid rgba(82,181,168,0.08);">
-          <div style="font-family:'Bricolage Grotesque';font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-0.5px;">Vaccine Cost</div>
-          <div style="font-size:14px;color:var(--grey);line-height:1.7;">This is the actual cost of the vaccine itself — varies by brand and type. Shown clearly before checkout.</div>
-        </div>
-        <div style="background:var(--white);border-radius:14px;padding:22px;border:1px solid rgba(82,181,168,0.08);">
-          <div style="font-family:'Bricolage Grotesque';font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-0.5px;">Nurse Visit Fee</div>
-          <div style="font-size:14px;color:var(--grey);line-height:1.7;">₹199 per visit (waived on Family Plan). Covers travel, time, and equipment for your vaccinator.</div>
-        </div>
-        <div style="background:var(--white);border-radius:14px;padding:22px;border:1px solid rgba(82,181,168,0.08);">
-          <div style="font-family:'Bricolage Grotesque';font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-0.5px;">No Hidden Fees</div>
-          <div style="font-size:14px;color:var(--grey);line-height:1.7;">What you see at checkout is what you pay. No surprise charges, no cancellation fee for 24hr advance notice.</div>
-        </div>
+        <button class="plan-btn pbo" onclick="go('contact')">Contact Us</button>
       </div>
     </div>
-
-  </div>
+  </section>
 </div>
 
-<!-- ===================== CONTACT ===================== -->
+<!-- ══════════════════════════════════════════
+     CONTACT
+══════════════════════════════════════════════ -->
 <div class="page" id="page-contact">
-  <div class="contact-hero">
+  <div class="con-hero">
     <h1>Get in <em>Touch</em></h1>
     <p>Whether you want to book, partner with us, or join as a vaccinator — we'd love to hear from you.</p>
   </div>
-
-  <div class="contact-section">
-    <div class="contact-grid">
-
+  <section class="sec">
+    <div class="con-grid">
       <div>
-        <div class="ci-title">Let's talk<br/><span>VaxDoor.</span></div>
-        <div class="ci-body">We're a small passionate team building India's first on-demand home vaccination service. Reach out for bookings, partnerships, or press.</div>
-
-        <div style="display:flex;flex-direction:column;gap:14px;">
-          <div class="ci-card">
-            <div class="ci-ico">📧</div>
-            <div><div class="ci-info-title">Email Us</div><div class="ci-info-val">hello@vaxdoor.in</div></div>
-          </div>
-          <div class="ci-card">
-            <div class="ci-ico">📞</div>
-            <div><div class="ci-info-title">Call / WhatsApp</div><div class="ci-info-val">+91 98765 43210</div></div>
-          </div>
-          <div class="ci-card">
-            <div class="ci-ico">📍</div>
-            <div><div class="ci-info-title">Headquarters</div><div class="ci-info-val">Koramangala, Bangalore · Karnataka, India</div></div>
-          </div>
-          <div class="ci-card">
-            <div class="ci-ico">🕐</div>
-            <div><div class="ci-info-title">Support Hours</div><div class="ci-info-val">Mon – Sat, 8:00 AM – 8:00 PM IST</div></div>
-          </div>
+        <div class="ci-t">Let's talk<br/><span>VaxDoor.</span></div>
+        <div class="ci-b">We're a passionate team building India's first on-demand home vaccination service. Reach out for bookings, partnerships, or press inquiries.</div>
+        <div class="ci-cards">
+          <div class="cicard"><div class="cic-ico">📧</div><div><div class="cic-t">Email Us</div><div class="cic-v">hello@vaxdoor.in</div></div></div>
+          <div class="cicard"><div class="cic-ico">📞</div><div><div class="cic-t">Call / WhatsApp</div><div class="cic-v">+91 99036 82889 — Subhabrata Tripathy</div></div></div>
+          <div class="cicard"><div class="cic-ico">📍</div><div><div class="cic-t">Headquarters</div><div class="cic-v">Koramangala, Bangalore · Karnataka, India</div></div></div>
+          <div class="cicard"><div class="cic-ico">🕐</div><div><div class="cic-t">Support Hours</div><div class="cic-v">Mon – Sat, 8:00 AM – 8:00 PM IST</div></div></div>
         </div>
       </div>
 
-      <div class="contact-form">
-        <div class="cf-title">Send us a message</div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">First Name</label>
-            <input class="form-input" placeholder="Subh" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">Last Name</label>
-            <input class="form-input" placeholder="Tripathy" />
-          </div>
+      <div class="cf">
+        <div class="cf-t">Send us a message</div>
+        <div class="frow">
+          <div class="fg"><label class="fl">First Name</label><input class="fi" placeholder="Subhabrata"/></div>
+          <div class="fg"><label class="fl">Last Name</label><input class="fi" placeholder="Tripathy"/></div>
         </div>
-
-        <div class="form-group">
-          <label class="form-label">Email Address</label>
-          <input class="form-input" placeholder="you@example.com" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Phone Number</label>
-          <input class="form-input" placeholder="+91 98765 43210" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">I'm reaching out about…</label>
-          <select class="form-select">
+        <div class="fg"><label class="fl">Email Address</label><input class="fi" placeholder="you@example.com"/></div>
+        <div class="fg"><label class="fl">Phone Number</label><input class="fi" placeholder="+91 99036 82889"/></div>
+        <div class="fg">
+          <label class="fl">I'm reaching out about…</label>
+          <select class="fsel">
             <option>Booking a vaccination</option>
-            <option>Joining as a nurse/vaccinator</option>
+            <option>Joining as a nurse / vaccinator</option>
             <option>Corporate partnership</option>
             <option>Press & media</option>
             <option>Something else</option>
           </select>
         </div>
-
-        <div class="form-group">
-          <label class="form-label">Message</label>
-          <textarea class="form-textarea" placeholder="Tell us what you need…"></textarea>
-        </div>
-
-        <button class="form-submit">Send Message →</button>
+        <div class="fg"><label class="fl">Message</label><textarea class="fta" placeholder="Tell us what you need…"></textarea></div>
+        <button class="fsub">Send Message →</button>
       </div>
-
     </div>
-  </div>
+  </section>
 </div>
 
-<!-- ===================== FOOTER ===================== -->
+<!-- ══ FOOTER ════════════════════════════════ -->
 <footer>
-  <div class="footer-top">
-    <div class="footer-brand">
-      <div class="fl-logo">Vax<span>Door</span></div>
-      <p>India's first on-demand home vaccination service. Book a certified nurse to vaccinate you and your family — wherever you are.</p>
-      <div class="social-row">
-        <button class="soc-btn">𝕏</button>
-        <button class="soc-btn">in</button>
-        <button class="soc-btn">📸</button>
-        <button class="soc-btn">▶</button>
+  <div class="ft">
+    <div>
+      <div class="fb-logo">Vax<span>Door</span></div>
+      <div class="fb-p">India's first on-demand home vaccination service. Book a certified nurse — wherever you are.</div>
+      <div class="socrow">
+        <button class="socbtn">𝕏</button>
+        <button class="socbtn">in</button>
+        <button class="socbtn">📸</button>
+        <button class="socbtn">▶</button>
       </div>
     </div>
-
-    <div class="footer-col">
+    <div class="fc-col">
       <h4>Product</h4>
       <ul>
-        <li onclick="showPage('vaccines')">Vaccine Catalogue</li>
-        <li onclick="showPage('how')">How It Works</li>
-        <li onclick="showPage('pricing')">Pricing</li>
+        <li onclick="go('vaccines')">Vaccine Catalogue</li>
+        <li onclick="go('how')">How It Works</li>
+        <li onclick="go('pricing')">Pricing</li>
         <li>Download App</li>
       </ul>
     </div>
-
-    <div class="footer-col">
+    <div class="fc-col">
       <h4>Company</h4>
       <ul>
         <li>About Us</li>
-        <li onclick="showPage('vaccinator')">For Nurses</li>
+        <li onclick="go('vaccinator')">For Nurses</li>
         <li>Careers</li>
-        <li onclick="showPage('contact')">Contact</li>
+        <li onclick="go('contact')">Contact</li>
       </ul>
     </div>
-
-    <div class="footer-col">
+    <div class="fc-col">
       <h4>Legal</h4>
       <ul>
         <li>Privacy Policy</li>
@@ -1520,37 +1168,46 @@
       </ul>
     </div>
   </div>
-
-  <div class="footer-bottom">
-    <div class="fb-copy">© 2026 VaxDoor Technologies Pvt. Ltd. · All rights reserved.</div>
-    <div class="fb-made">Built by <span>Subh Tripathy</span> · Made in India 🇮🇳</div>
+  <div class="fb-bot">
+    <div class="fbc">© 2026 VaxDoor Technologies Pvt. Ltd.</div>
+    <div class="fbm">Built by <span>Subhabrata Tripathy</span> · Made in India 🇮🇳</div>
   </div>
 </footer>
 
 <script>
-  function showPage(id) {
-    // Hide all pages
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    // Show selected
-    document.getElementById('page-' + id).classList.add('active');
-    // Update nav
-    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-    const map = { home: 0, how: 1, vaccines: 2, vaccinator: 3, pricing: 4, contact: 5 };
-    const links = document.querySelectorAll('#navLinks .nav-link');
-    if (links[map[id]]) links[map[id]].classList.add('active');
-    // Scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+const pages=['home','how','vaccines','vaccinator','pricing','contact'];
 
-  function toggleMobile() {
-    const m = document.getElementById('mobileMenu');
-    m.style.display = m.style.display === 'none' ? 'flex' : 'none';
-  }
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('act'));
+  document.getElementById('page-'+id).classList.add('act');
+  document.querySelectorAll('.nlink').forEach(l=>l.classList.remove('act'));
+  const idx=pages.indexOf(id);
+  const links=document.querySelectorAll('#nlinks .nlink');
+  if(links[idx])links[idx].classList.add('act');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 
-  // Navbar scroll shadow
-  window.addEventListener('scroll', () => {
-    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
-  });
+function toggleMenu(){
+  const m=document.getElementById('mmenu');
+  m.style.display=m.style.display==='flex'?'none':'flex';
+}
+
+function closeMenu(){
+  document.getElementById('mmenu').style.display='none';
+}
+
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>8);
+});
+
+// Close menu on outside click
+document.addEventListener('click',e=>{
+  const m=document.getElementById('mmenu');
+  const b=document.getElementById('hbg');
+  if(m.style.display==='flex'&&!m.contains(e.target)&&!b.contains(e.target)){
+    m.style.display='none';
+  }
+});
 </script>
 </body>
 </html>
